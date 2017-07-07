@@ -41,7 +41,7 @@ function Example:paintbg()
 	-- Note that we are technically drawing outside the bounds
 	-- of our widget. SimpleUI does not clip any graphics calls,
 	-- but we should always respect the layout parameters.
-	drawrect("Margin", 255, 128, 128, -ml, -mt, mr+pr+w, mb+pb+h)
+	drawrect("Margin", 255, 128, 128, -ml, -mt, w+ml+mr, h+mt+mb)
 
 	-- Padding in blue.
 	-- We are "inside" the widget here. You will notice mouse
