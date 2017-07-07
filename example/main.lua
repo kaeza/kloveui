@@ -165,6 +165,16 @@ local root; root = sui.Box {
 				-- We don't specify bottom, so it defaults to 0.
 			},
 			text = "Custom widget",
+			-- We can add children to our widget, but we must
+			-- explicitly set their positions and dimensions,
+			-- unless we override `simpleui.Widget:layout`.
+			sui.Button {
+				x = 40,
+				y = 60,
+				w = 80,
+				h = 24,
+				text = "child",
+			},
 		},
 		-- You can also override some methods in-place.
 		sui.Widget {
