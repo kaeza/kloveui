@@ -133,7 +133,6 @@ local root; root = sui.Box {
 		},
 	},
 	sui.Box {
-		__debug = true,
 		mode = "h",
 		spacing = 8,
 		padding = 8,
@@ -147,7 +146,7 @@ local root; root = sui.Box {
 		padding = 8,
 		-- If we want to right-align items, we can add a dummy
 		-- expandable widget to the start.
-		sui.Widget { expand=true },
+		sui.Widget { expand=true, __debug=true },
 		sui.Label { text="Example of an horizontal box." },
 		sui.Button { text="Yes" },
 		sui.Button { text="No" },
