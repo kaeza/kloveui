@@ -9,6 +9,7 @@ local name = ...
 for _, m in ipairs({
 	"Widget",
 	"Label",
+	"Image",
 	"Button",
 	"Box",
 }) do
