@@ -113,18 +113,24 @@ local root; root = sui.Box {
 		sui.Button {
 			text = "Hello, world!",
 		},
-	},
-	sui.Button {
-		text = "Click me to add more buttons!",
-		activate = function()
-			root:addchild(sui.Button {
-				expand=true,
-				text="Click me to remove me!",
-				activate = function(_self)
-					root:removechild(_self)
-				end,
-			})
-		end,
+		sui.Button {
+			text = "Click me to add more buttons!",
+			activate = function()
+				root:addchild(sui.Button {
+					expand=true,
+					text="Click me to remove me!",
+					activate = function(_self)
+						root:removechild(_self)
+					end,
+				})
+			end,
+		},
+		sui.Button {
+			text = "Re-layout",
+			activate = function()
+				root:layout()
+			end,
+		},
 	},
 	sui.Box {
 		__debug = true,
@@ -146,52 +152,52 @@ local root; root = sui.Box {
 		sui.Button { text="Yes" },
 		sui.Button { text="No" },
 	},
-	-- Let's test our example.
-	Example {
-		margin = 20,
-		-- We can also specify borders separately.
-		padding = {
-			l = 10,  -- Left
-			t = 20,  -- Top
-			r = 30,  -- Right
-			-- We don't specify bottom, so it defaults to 0.
+	sui.Box {
+		mode = "h",
+		-- Let's test our example.
+		Example {
+			expand = true,
+			margin = 20,
+			-- We can also specify borders separately.
+			padding = {
+				l = 10,  -- Left
+				t = 20,  -- Top
+				r = 30,  -- Right
+				-- We don't specify bottom, so it defaults to 0.
+			},
+			text = "Custom widget",
 		},
-		text = "Custom widget",
-	},
-	-- You can also override some methods in-place.
-	sui.Widget {
-		-- Let's specify minimum size directly.
-		minw = 40,
-		minh = 40,
+		-- You can also override some methods in-place.
+		sui.Widget {
+			expand = true,
 
-		-- Setting `__debug` to true causes the `paintfg` implementation
-		-- in `simpleui.Widget` to paint some debugging information.
-		__debug = true,
+			-- Let's specify minimum size directly.
+			minw = 40,
+			minh = 40,
 
-		-- Though it is not recommended, you can edit some "internal"
-		-- fields too. In this case, this is the class name.
-		__name = "A widget",
+			-- Setting `__debug` to true causes the `paintfg` implementation
+			-- in `simpleui.Widget` to paint some debugging information.
+			__debug = true,
 
-		-- Private fields should begin with a single `_` to avoid clashes.
-		_c = 0,
+			-- Though it is not recommended, you can edit some "internal"
+			-- fields too. In this case, this is the class name.
+			__name = "A widget",
 
-		update = function(_self, dtime)
-			_self._c = _self._c+dtime
-		end,
+			-- Private fields should begin with a single `_` to avoid clashes.
+			_c = 0,
 
-		paintfg = function(_self)
-			_self:drawtext(not _self.enabled,
-					("%.2f"):format(_self._c), .5, .5)
-			-- It's important to call the method on the base class to
-			-- make `__debug` work.
-			sui.Widget.paintfg(_self)
-		end,
-	},
-	sui.Button {
-		text = "Re-layout",
-		activate = function()
-			root:layout()
-		end,
+			update = function(_self, dtime)
+				_self._c = _self._c+dtime
+			end,
+
+			paintfg = function(_self)
+				_self:drawtext(not _self.enabled,
+						("%.2f"):format(_self._c), .5, .5)
+				-- It's important to call the method on the base class to
+				-- make `__debug` work.
+				sui.Widget.paintfg(_self)
+			end,
+		},
 	},
 }
 
