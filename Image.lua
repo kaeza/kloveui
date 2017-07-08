@@ -5,8 +5,6 @@
 
 local gfx = love.graphics
 
-local min, max = math.min, math.max
-
 local Widget = require "simpleui.Widget"
 
 local Image = Widget:extend("simpleui.Image")
