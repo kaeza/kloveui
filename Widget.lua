@@ -457,4 +457,10 @@ end
 function Widget:mouseleave()
 end
 
+---
+-- @tparam number dx
+-- @tparam number dy
+function Widget:wheelmoved(dx, dy)
+end
+
 return Widget

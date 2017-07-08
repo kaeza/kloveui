@@ -64,6 +64,13 @@ function M.mousemoved(x, y, dx, dy)
 	end
 end
 
+function M.wheelmoved(dx, dy)
+	local wid = rootwidget:hittest(dx, dy)
+	if wid then
+		wid:wheelmoved(dx, dy)
+	end
+end
+
 function M.resize(w, h)
 	rootwidget:size(w, h)
 end
@@ -75,6 +82,7 @@ function M.run(root)
 	love.mousepressed = M.mousepressed
 	love.mousereleased = M.mousereleased
 	love.mousemoved = M.mousemoved
+	love.wheelmoved = M.wheelmoved
 	love.resize = M.resize
 	local ww, wh = love.window.getMode()
 	love.resize(ww, wh)
