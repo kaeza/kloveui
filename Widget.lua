@@ -4,7 +4,7 @@
 
 local gfx = love.graphics
 
-local floor = math.floor
+local min, max, floor = math.min, math.max, math.floor
 
 local klass = require "klass"
 
@@ -320,8 +320,14 @@ end
 -- @treturn number h
 function Widget:size(w, h)
 	local mod
-	if w ~= nil then mod, self.w = true, w end
-	if h ~= nil then mod, self.h = true, h end
+	local minw, minh = self:minsize()
+	local maxw, maxh = self:maxsize()
+	if w ~= nil then
+		mod, self.w = true, max(minw, min(maxw, w))
+	end
+	if h ~= nil then
+		mod, self.h = true, max(minh, min(maxh, h))
+	end
 	if mod then
 		self:layout()
 	end
@@ -341,8 +347,14 @@ function Widget:rect(x, y, w, h)
 	local mod
 	if x ~= nil then mod, self.x = true, x end
 	if y ~= nil then mod, self.y = true, y end
-	if w ~= nil then mod, self.w = true, w end
-	if h ~= nil then mod, self.h = true, h end
+	local minw, minh = self:minsize()
+	local maxw, maxh = self:maxsize()
+	if w ~= nil then
+		mod, self.w = true, max(minw, min(maxw, w))
+	end
+	if h ~= nil then
+		mod, self.h = true, max(minh, min(maxh, h))
+	end
 	if mod then
 		self:layout()
 	end
