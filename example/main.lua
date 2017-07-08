@@ -210,10 +210,20 @@ local root; root = sui.Box {
 	},
 }
 
+-- Run our UI. This modifies the global `love` event callbacks, sets
+-- the specified widget as the root, and returns. The LÖVE event loop
+-- then takes care of the rest.
 sui.run(root)
 
+-- If you need to modify event handlers, remember to do it *after*
+-- calling `simpleui.run`, and to call back into the old function
+-- if you don't handle the event yourself.
+local oldkeypressed = love.keypressed or function() end
 function love.keypressed(k)
 	if k == "escape" then
 		love.event.quit()
+		return
 	end
+	-- Alternatively, `return sui.keypressed(k)`.
+	return oldkeypressed(k)
 end
