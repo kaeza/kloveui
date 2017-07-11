@@ -12,6 +12,7 @@ for _, m in ipairs({
 	"Image",
 	"Button",
 	"Check",
+	"Option",
 	"Box",
 	"Entry",
 }) do

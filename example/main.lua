@@ -155,6 +155,10 @@ local root; root = sui.Box {
 		sui.Check { text="Check 1" },
 		sui.Check { text="Check 2", value=true },
 		sui.Check { text="Check 3" },
+		sui.Option { text="Option 1" },
+		sui.Option { text="Option 2", value=true },
+		sui.Option { text="Option 3", group="bar" },
+		sui.Option { text="Option 4", value=true, group="bar" },
 	},
 	sui.Entry {
 		text = "An editable text entry. ãéìôüñ",
