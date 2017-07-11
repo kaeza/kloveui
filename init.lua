@@ -71,14 +71,15 @@ end
 -- @tparam number x
 -- @tparam number y
 -- @tparam number b
-function M.mousepressed(x, y, b)
+-- @tparam boolean istouch
+function M.mousepressed(x, y, b, istouch)
 	local wid, rx, ry = getmouse(x, y)
 	if wid then
 		if wid.canfocus then
 			M.setfocus(wid)
 		end
 		mousewidget, mousewidgetx, mousewidgety = wid, wid:abspos()
-		wid:mousepressed(rx, ry, b)
+		wid:mousepressed(rx, ry, b, istouch)
 	end
 end
 
@@ -86,10 +87,11 @@ end
 -- @tparam number x
 -- @tparam number y
 -- @tparam number b
-function M.mousereleased(x, y, b)
+-- @tparam boolean istouch
+function M.mousereleased(x, y, b, istouch)
 	local wid, rx, ry = getmouse(x, y)
 	if wid then
-		wid:mousereleased(rx, ry, b)
+		wid:mousereleased(rx, ry, b, istouch)
 		mousewidget, mousewidgetx, mousewidgety = nil, nil, nil
 	end
 end
