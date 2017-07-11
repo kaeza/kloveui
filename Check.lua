@@ -25,8 +25,7 @@ end
 -- @tparam boolean value
 -- @tparam number x
 -- @tparam number y
--- @tparam number w
--- @tparam number h
+-- @tparam number size
 function Check:paintcheck(value, x, y, size)
 	gfx.rectangle("line", x, y, size, size)
 	if value then

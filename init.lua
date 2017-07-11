@@ -106,8 +106,10 @@ function M.mousereleased(x, y, b, istouch)
 end
 
 ---
--- @tparam number w
--- @tparam number h
+-- @tparam number x
+-- @tparam number y
+-- @tparam number dx
+-- @tparam number dy
 function M.mousemoved(x, y, dx, dy)
 	if mousewidget then
 		mousewidget:mousemoved(x-mousewidgetx, y-mousewidgety, dx, dy)
