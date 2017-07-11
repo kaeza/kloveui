@@ -12,6 +12,7 @@ for _, m in ipairs({
 	"Image",
 	"Button",
 	"Box",
+	"Entry",
 }) do
 	M[m] = require(name.."."..m)
 end

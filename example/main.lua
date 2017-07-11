@@ -151,6 +151,9 @@ local root; root = sui.Box {
 		sui.Button { text="Yes" },
 		sui.Button { text="No" },
 	},
+	sui.Entry {
+		text = "An editable text entry. ãéìôüñ",
+	},
 	sui.Box {
 		mode = "h",
 		-- Let's test our example.
