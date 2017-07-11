@@ -151,6 +151,11 @@ local root; root = sui.Box {
 		sui.Button { text="Yes" },
 		sui.Button { text="No" },
 	},
+	sui.Box {
+		sui.Check { text="Check 1" },
+		sui.Check { text="Check 2", value=true },
+		sui.Check { text="Check 3" },
+	},
 	sui.Entry {
 		text = "An editable text entry. ãéìôüñ",
 	},
