@@ -46,10 +46,13 @@ function M.getfocus(wid)
 	return old
 end
 
+---
 function M.draw()
 	rootwidget:draw()
 end
 
+---
+-- @tparam number dtime
 function M.update(dtime)
 	rootwidget:update(dtime)
 end
@@ -64,6 +67,10 @@ local function getmouse(x, y)
 	return wid, rx, ry
 end
 
+---
+-- @tparam number x
+-- @tparam number y
+-- @tparam number b
 function M.mousepressed(x, y, b)
 	local wid, rx, ry = getmouse(x, y)
 	if wid then
@@ -75,6 +82,10 @@ function M.mousepressed(x, y, b)
 	end
 end
 
+---
+-- @tparam number x
+-- @tparam number y
+-- @tparam number b
 function M.mousereleased(x, y, b)
 	local wid, rx, ry = getmouse(x, y)
 	if wid then
@@ -83,6 +94,9 @@ function M.mousereleased(x, y, b)
 	end
 end
 
+---
+-- @tparam number w
+-- @tparam number h
 function M.mousemoved(x, y, dx, dy)
 	if mousewidget then
 		mousewidget:mousemoved(x-mousewidgetx, y-mousewidgety, dx, dy)
@@ -94,35 +108,54 @@ function M.mousemoved(x, y, dx, dy)
 	end
 end
 
+---
+-- @tparam number dx
+-- @tparam number dy
 function M.wheelmoved(dx, dy)
-	local wid = rootwidget:hittest(dx, dy)
-	if wid then
-		wid:wheelmoved(dx, dy)
+	if mousewidget then
+		mousewidget:wheelmoved(dx, dy)
+	else
+		local wid = getmouse(love.mouse.getPosition())
+		if wid then
+			wid:wheelmoved(dx, dy)
+		end
 	end
 end
 
+---
+-- @tparam number w
+-- @tparam number h
 function M.resize(w, h)
 	rootwidget:size(w, h)
 end
 
+---
+-- @tparam love.keyboard.KeyConstant key
+-- @tparam boolean isrep
 function M.keypressed(key, isrep)
 	if focuswidget then
 		focuswidget:keypressed(key, isrep)
 	end
 end
 
+---
+-- @tparam love.keyboard.KeyConstant key
 function M.keyreleased(key)
 	if focuswidget then
 		focuswidget:keyreleased(key)
 	end
 end
 
+---
+-- @tparam string text
 function M.textinput(text)
 	if focuswidget then
 		focuswidget:textinput(text)
 	end
 end
 
+---
+-- @tparam simpleui.Widget root
 function M.run(root)
 	rootwidget = root
 	mousewidget = nil
