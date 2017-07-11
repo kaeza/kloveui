@@ -173,6 +173,7 @@ function M.run(root)
 	love.textinput = M.textinput
 	love.resize = M.resize
 	local ww, wh = love.window.getMode()
+	love.keyboard.setKeyRepeat(true)
 	love.resize(ww, wh)
 end
 
