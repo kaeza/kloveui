@@ -178,9 +178,10 @@ end
 ---
 -- @tparam any id
 -- @treturn simpleui.Widget|nil
-function Widget:getchild(id)
+-- @see simpleui.lookup
+function Widget:lookup(id)
 	for _, child in self:children() do
-		local found = child:getchild(id)
+		local found = child:lookup(id)
 		if found then
 			return found
 		end

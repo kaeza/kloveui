@@ -49,6 +49,13 @@ function M.getfocus(wid)
 end
 
 ---
+-- @tparam any id
+-- @treturn simpleui.Widget|nil
+function M.lookup(id)
+	return rootwidget:lookup(id)
+end
+
+---
 function M.draw()
 	rootwidget:draw()
 end
