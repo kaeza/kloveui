@@ -87,6 +87,14 @@ Widget.margin = 0
 Widget.padding = 0
 
 ---
+-- @tfield boolean canfocus
+Widget.canfocus = false
+
+---
+-- @tfield boolean focused
+Widget.focused = false
+
+---
 -- @tfield table __refs
 Widget.__refs = nil
 
@@ -430,6 +438,19 @@ function Widget:update(dtime)
 end
 
 ---
+function Widget:setfocus()
+	return require("simpleui").setfocus(self)
+end
+
+---
+function Widget:focusgot()
+end
+
+---
+function Widget:focuslost()
+end
+
+---
 -- @tparam number x
 -- @tparam number y
 -- @tparam love.mouse.MouseButton b
@@ -461,6 +482,22 @@ end
 -- @tparam number dx
 -- @tparam number dy
 function Widget:wheelmoved(dx, dy)
+end
+
+---
+-- @tparam love.keyboard.KeyConstant key
+-- @tparam boolean isrep
+function Widget:keypressed(key, isrep)
+end
+
+---
+-- @tparam love.keyboard.KeyConstant key
+function Widget:keyreleased(key)
+end
+
+---
+-- @tparam string text
+function Widget:textinput(text)
 end
 
 return Widget
