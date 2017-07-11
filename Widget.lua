@@ -453,15 +453,17 @@ end
 ---
 -- @tparam number x
 -- @tparam number y
--- @tparam love.mouse.MouseButton b
-function Widget:mousepressed(x, y, b)
+-- @tparam number b
+-- @tparam boolean istouch
+function Widget:mousepressed(x, y, b, istouch)
 end
 
 ---
 -- @tparam number x
 -- @tparam number y
--- @tparam love.mouse.MouseButton b
-function Widget:mousereleased(x, y, b)
+-- @tparam number b
+-- @tparam boolean istouch
+function Widget:mousereleased(x, y, b, istouch)
 end
 
 ---
