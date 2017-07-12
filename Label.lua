@@ -48,9 +48,10 @@ function Label:calcminsize()
 end
 
 function Label:paintfg()
+	local pl, pt, pr, pb = self:paddings()
 	self:drawtext(not self.enabled, self.text,
 			self.texthalign, self.textvalign, self.font,
-			0, 0, self:size())
+			pl, pt, self.w-pl-pr, self.h-pt-pb)
 	Widget.paintfg(self)
 end
 

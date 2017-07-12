@@ -83,10 +83,11 @@ function Button:paintbg()
 end
 
 function Button:paintfg()
+	local pl, pt, pr, pb = self:paddings()
 	local p = self.pressed and 1 or 0
 	self:drawtext(not self.enabled, self.text,
 			self.texthalign, self.textvalign, self.font,
-			p, p, self:size())
+			pl+p, pt+p, self.w-pl-pr, self.h-pt-pb)
 	Widget.paintfg(self)
 end
 
