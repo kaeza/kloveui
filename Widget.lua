@@ -11,6 +11,7 @@
 -- * `simpleui.Entry`
 -- * `simpleui.Image`
 -- * `simpleui.Label`
+-- * `simpleui.Slider`
 --
 -- @classmod simpleui.Widget
 

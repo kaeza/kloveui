@@ -20,6 +20,7 @@ for _, m in ipairs({
 	"Option",
 	"Box",
 	"Entry",
+	"Slider",
 }) do
 	M[m] = require(name.."."..m)
 end

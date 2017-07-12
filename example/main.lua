@@ -152,6 +152,9 @@ local root; root = sui.Box {
 		sui.Button { text="No" },
 	},
 	sui.Box {
+		mode = "h",
+		spacing = 8,
+		padding = 8,
 		sui.Check { text="Check 1" },
 		sui.Check { text="Check 2", value=true },
 		sui.Check { text="Check 3" },
@@ -159,6 +162,27 @@ local root; root = sui.Box {
 		sui.Option { text="Option 2", value=true },
 		sui.Option { text="Option 3", group="bar" },
 		sui.Option { text="Option 4", value=true, group="bar" },
+	},
+	sui.Box {
+		mode = "h",
+		spacing = 8,
+		padding = 8,
+		sui.Label { text="Sliders" },
+		sui.Label { text="Free" },
+		sui.Slider {
+			expand = true,
+			valuechanged = function(_self)
+				print(_self.value)
+			end,
+		},
+		sui.Label { text="Snapping" },
+		sui.Slider {
+			expand = true,
+			increment = 0.1,
+			valuechanged = function(_self)
+				print(_self.value)
+			end,
+		},
 	},
 	sui.Entry {
 		text = "An editable text entry. ãéìôüñ",
