@@ -34,7 +34,7 @@ function Option:paintcheck(value, x, y, size)
 	end
 end
 
-function Option:activate()
+function Option:activated()
 	local p = self.__refs.parent
 	for wid in p:children() do
 		if rawequal(wid.group, self.group) then

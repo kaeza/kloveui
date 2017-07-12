@@ -51,6 +51,11 @@ Button.pressed = false
 
 Button.padding = 4
 
+---
+-- Called when the button is clicked.
+function Button:activated()
+end
+
 function Button:calcminsize()
 	local font, text = self.font or gfx.getFont(), self.text
 	local tw, th = font:getWidth(text), font:getHeight(text)
@@ -66,7 +71,7 @@ end
 
 function Button:mousereleased(x, y, b)
 	if self.pressed and b == self.LMB and self:inside(x, y) then
-		self:activate()
+		self:activated()
 	end
 	self.pressed = false
 end
@@ -89,11 +94,6 @@ function Button:paintfg()
 			self.texthalign, self.textvalign, self.font,
 			pl+p, pt+p, self.w-pl-pr, self.h-pt-pb)
 	Widget.paintfg(self)
-end
-
----
--- Called when the button is clicked.
-function Button:activate()
 end
 
 return Button

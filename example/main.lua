@@ -115,11 +115,11 @@ local root; root = sui.Box {
 		},
 		sui.Button {
 			text = "Click me to add more buttons!",
-			activate = function()
+			activated = function()
 				root:addchild(sui.Button {
 					expand=true,
 					text="Click me to remove me!",
-					activate = function(_self)
+					activated = function(_self)
 						root:removechild(_self)
 					end,
 				})
@@ -127,7 +127,7 @@ local root; root = sui.Box {
 		},
 		sui.Button {
 			text = "Re-layout",
-			activate = function()
+			activated = function()
 				root:layout()
 			end,
 		},

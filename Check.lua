@@ -62,7 +62,7 @@ function Check:paintfg()
 	Widget.paintfg(self)
 end
 
-function Check:activate()
+function Check:activated()
 	self.value = not self.value
 end
 
