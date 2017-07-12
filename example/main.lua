@@ -186,7 +186,7 @@ local root; root = sui.Box {
 	},
 	sui.Entry {
 		text = "An editable text entry. ãéìôüñ",
-		commit = function(_self)
+		committed = function(_self)
 			print(_self.text)
 		end,
 	},

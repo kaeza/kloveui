@@ -11,7 +11,7 @@
 --   of the text, respectively.
 -- * Backspace and Delete remove the character directly to the left or right
 --   of the insertion point, respectively.
--- * Enter or Return commits the text (calls the `commit` method).
+-- * Enter or Return commits the text (calls the `committed` method).
 --
 -- **Extends:** `simpleui.Widget`
 --
@@ -90,6 +90,11 @@ function Entry:postoindex(x)
 end
 
 ---
+-- Called when the Enter key is pressed.
+function Entry:committed()
+end
+
+---
 -- Convert from an index to a pixel offset.
 --
 -- @tparam number index Index of the character.
@@ -148,7 +153,7 @@ function Entry:keypressed(key)
 		if self.index > ustrlen(self.text) then return end
 		self.index = self.index + 1
 	elseif key == "return" or key == "kpenter" then
-		self:commit()
+		self:committed()
 	end
 end
 
@@ -174,11 +179,6 @@ function Entry:paintfg()
 	local x = self:indextopos(self.index)
 	gfx.line(x, pt-2, x, th+2)
 	Widget.paintfg(self)
-end
-
----
--- Called when the Enter key is pressed.
-function Entry:commit()
 end
 
 return Entry
