@@ -147,6 +147,8 @@ function Entry:keypressed(key)
 	elseif key == "right" then
 		if self.index > ustrlen(self.text) then return end
 		self.index = self.index + 1
+	elseif key == "return" or key == "kpenter" then
+		self:commit()
 	end
 end
 

@@ -162,6 +162,9 @@ local root; root = sui.Box {
 	},
 	sui.Entry {
 		text = "An editable text entry. ãéìôüñ",
+		commit = function(_self)
+			print(_self.text)
+		end,
 	},
 	sui.Box {
 		mode = "h",
