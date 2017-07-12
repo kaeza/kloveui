@@ -1,7 +1,16 @@
 
 ---
+-- Toggleable checkbox button.
+--
+-- Check buttons are toggled by clicking.
+--
+-- **Extends:** `simpleui.Button`
+--
+-- **Direct subclasses:**
+--
+-- * `simpleui.Option`
+--
 -- @classmod simpleui.Check
--- @see simpleui.Button
 
 local gfx = love.graphics
 
@@ -11,7 +20,9 @@ local Button = require "simpleui.Button"
 local Check = Button:extend("simpleui.Check")
 
 ---
--- @tfield boolean value
+-- Current value of the checkmark.
+--
+-- @tfield boolean value Default is false.
 Check.value = false
 
 function Check:calcminsize()
@@ -22,10 +33,12 @@ function Check:calcminsize()
 end
 
 ---
--- @tparam boolean value
--- @tparam number x
--- @tparam number y
--- @tparam number size
+-- Called to paint the "check" part.
+--
+-- @tparam boolean value True if checked, false if unchecked.
+-- @tparam number x X position.
+-- @tparam number y Y position.
+-- @tparam number size Size of the checkbox.
 function Check:paintcheck(value, x, y, size)
 	gfx.rectangle("line", x, y, size, size)
 	if value then

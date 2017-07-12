@@ -1,7 +1,15 @@
 
 ---
+-- Widget that lays out its children horizontally or vertically.
+--
+-- Childrens are laid out left to right. Those whose `expand` property is
+-- false are placed at their minimum size; the remaining space is shared
+-- equally among those whose `expand` property is true.
+--
+-- **Extends:** `simpleui.Widget`
+--
 -- @classmod simpleui.Box
--- @see simpleui.Widget
+-- @see simpleui.Widget.expand
 
 local max = math.max
 
@@ -10,11 +18,18 @@ local Widget = require "simpleui.Widget"
 local Box = Widget:extend("simpleui.Box")
 
 ---
--- @tfield string mode `"h"` or `"v"`. Default is `"h"`.
+-- Layout mode.
+--
+-- If `"v"` lays out children vertically. Any other value lays out children
+-- horizontally.
+--
+-- @tfield string mode Default is `"h"`.
 Box.mode = "h"
 
 ---
--- @tfield number spacing
+-- Spacing between elements.
+--
+-- @tfield number spacing Default is 0.
 Box.spacing = 0
 
 function Box:layout()

@@ -1,7 +1,16 @@
 
 ---
+-- Option or "radio" button.
+--
+-- Radio buttons are like check buttons, but only one in a group may be
+-- selected at any one time. They are grouped first by parent, and sub-grouped
+-- by their `group` value. When one is "checked", all others with the same
+-- parent *and* group are unchecked. Groups are checked for equality using the
+-- `rawequal` function.
+--
+-- **Extends:** `simpleui.Check`
+--
 -- @classmod simpleui.Option
--- @see simpleui.Check
 
 local gfx = love.graphics
 
@@ -10,8 +19,11 @@ local Check = require "simpleui.Check"
 local Option = Check:extend("simpleui.Option")
 
 ---
--- @tparam any group
-Option.group = ""
+-- Group of this option.
+--
+-- @tparam any group Default is an unique value. This default value is
+--  currently a table, but it's an implementation detail.
+Option.group = ({})
 
 function Option:paintcheck(value, x, y, size)
 	size = size/2
@@ -25,7 +37,7 @@ end
 function Option:activate()
 	local p = self.__refs.parent
 	for wid in p:children() do
-		if wid.group == self.group then
+		if rawequal(wid.group, self.group) then
 			wid.value = false
 		end
 	end

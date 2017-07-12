@@ -1,7 +1,21 @@
 
 ---
+-- Editable text input widget.
+--
+-- In addition to handling text input, the widget has some basic editing
+-- key bindings (some may not be available on all platforms):
+--
+-- * Left and right cursor keys move the insertion point one character to the
+--   left and right, respectively.
+-- * The Home and End keys move the insertion point to the beginning and end
+--   of the text, respectively.
+-- * Backspace and Delete remove the character directly to the left or right
+--   of the insertion point, respectively.
+-- * Enter or Return commits the text (calls the `commit` method).
+--
+-- **Extends:** `simpleui.Widget`
+--
 -- @classmod simpleui.Entry
--- @see simpleui.Widget
 
 local gfx = love.graphics
 
@@ -23,22 +37,37 @@ local function ustrsub(str, i, j)
 end
 
 ---
--- @tfield string text
+-- Text of this entry box.
+--
+-- @tfield string text Default is the empty string.
 Entry.text = ""
 
 ---
--- @tfield love.graphics.Font font
+-- Custom font for this entry box.
+--
+-- @tfield love.graphics.Font font Default is nil.
 Entry.font = nil
 
 ---
--- @tfield number index
+-- Index of insertion caret.
+--
+-- It refers to the space between characters, where 0 is just before the first
+-- character, 1 is between the first and second characters, and so on.
+--
+-- Note that "characters" refers to groups of bytes representing characters in
+-- the UTF-8 encoding. This is not the same unit Lua uses.
+--
+-- @tfield number index Default is 0.
 Entry.index = 0
 
 Entry.padding = 4
 
 ---
--- @tparam number x
--- @treturn number index
+-- Convert from a pixel offset to an index.
+--
+-- @tparam number x Pixel offset from the left border of the widget.
+-- @treturn number Index of the character at that position.
+-- @see index
 function Entry:postoindex(x)
 	local pl = self:paddings()
 	local text = self.text
@@ -61,8 +90,11 @@ function Entry:postoindex(x)
 end
 
 ---
--- @tparam number index
--- @treturn number x
+-- Convert from an index to a pixel offset.
+--
+-- @tparam number index Index of the character.
+-- @treturn number Pixel offset from the left border of the widget.
+-- @see index
 function Entry:indextopos(index)
 	local pl = self:paddings()
 	local font = self.font or gfx.getFont()
@@ -140,6 +172,11 @@ function Entry:paintfg()
 	local x = self:indextopos(self.index)
 	gfx.line(x, pt-2, x, th+2)
 	Widget.paintfg(self)
+end
+
+---
+-- Called when the Enter key is pressed.
+function Entry:commit()
 end
 
 return Entry

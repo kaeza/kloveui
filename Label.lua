@@ -1,7 +1,10 @@
 
 ---
+-- Textual label.
+--
+-- **Extends:** `simpleui.Widget`
+--
 -- @classmod simpleui.Label
--- @see simpleui.Widget
 
 local gfx = love.graphics
 
@@ -10,19 +13,31 @@ local Widget = require "simpleui.Widget"
 local Label = Widget:extend("simpleui.Label")
 
 ---
--- @tfield string text
+-- Text for the label.
+--
+-- Must be UTF-8 encoded.
+--
+-- @tfield string text Default is the empty string.
 Label.text = ""
 
 ---
--- @tfield love.graphics.Font font
+-- Custom font for this label.
+--
+-- @tfield love.graphics.Font font Default is nil.
 Label.font = nil
 
 ---
--- @tfield number texthalign
+-- Horizontal alignment for the text.
+--
+-- @tfield number texthalign Default is 0.
+-- @see simpleui.Widget:drawtext
 Label.texthalign = 0
 
 ---
--- @tfield number textvalign
+-- Vertical alignment for the text.
+--
+-- @tfield number textvalign Default is 0.5.
+-- @see simpleui.Widget:drawtext
 Label.textvalign = .5
 
 function Label:calcminsize()

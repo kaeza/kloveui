@@ -1,7 +1,17 @@
 
 ---
+-- Simple image widget.
+--
+-- The image is scaled to the widget size without any corrections.
+--
+-- If the widget has an image, its minimum size is that of the image,
+-- otherwise it is the default minimum size for widgets. You can always
+-- override it in the instance.
+--
+-- **Extends:** `simpleui.Widget`
+--
 -- @classmod simpleui.Image
--- @see simpleui.Widget
+-- @see simpleui.Widget:calcminsize
 
 local gfx = love.graphics
 
@@ -10,11 +20,15 @@ local Widget = require "simpleui.Widget"
 local Image = Widget:extend("simpleui.Image")
 
 ---
--- @tfield love.graphics.Image image
+-- Image to display.
+--
+-- @tfield love.graphics.Image image Default is nil.
 Image.image = nil
 
 ---
--- @tfield table tintcolor
+-- Tint color for the image.
+--
+-- @tfield simpleui.Color tintcolor Default is (255, 255, 255).
 Image.tintcolor = ({ 255, 255, 255 })
 
 function Image:calcminsize()

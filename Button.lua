@@ -1,7 +1,14 @@
 
 ---
+-- Clickable button.
+--
+-- **Extends:** `simpleui.Widget`
+--
+-- **Direct subclasses:**
+--
+-- * `simpleui.Check`
+--
 -- @classmod simpleui.Button
--- @see simpleui.Widget
 
 local gfx = love.graphics
 
@@ -10,22 +17,35 @@ local Widget = require "simpleui.Widget"
 local Button = Widget:extend("simpleui.Button")
 
 ---
--- @tfield string text
+-- Text label for the button.
+--
+-- @tfield string text Default is the empty string.
 Button.text = ""
 
 ---
--- @tfield love.graphics.Font font
+-- Custom font for the button.
+--
+-- @tfield love.graphics.Font font Default is nil.
 Button.font = nil
 
 ---
--- @tfield number texthalign
+-- Horizontal alignment for the text.
+--
+-- @tfield number texthalign Default is 0.5.
+-- @see simpleui.Widget:drawtext
 Button.texthalign = .5
 
 ---
--- @tfield number textvalign
+-- Vertical alignment for the text.
+--
+-- @tfield number textvalign Default is 0.5.
+-- @see simpleui.Widget:drawtext
 Button.textvalign = .5
 
 ---
+-- Whether the button is currently pressed.
+--
+-- @todo This should be private.
 -- @tfield boolean pressed
 Button.pressed = false
 
@@ -71,6 +91,7 @@ function Button:paintfg()
 end
 
 ---
+-- Called when the button is clicked.
 function Button:activate()
 end
 
