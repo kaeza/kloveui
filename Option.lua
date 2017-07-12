@@ -24,7 +24,7 @@ end
 
 function Option:activate()
 	local p = self.__refs.parent
-	for _, wid in p:children() do
+	for wid in p:children() do
 		if wid.group == self.group then
 			wid.value = false
 		end

@@ -161,7 +161,7 @@ function Widget:removechild(child)
 		self:layout()
 		return r
 	else
-		for i, c in ipairs(self) do
+		for c, i in self:children() do
 			if rawequal(c, child) then
 				local r = table.remove(self, i)
 				self:layout()
@@ -180,7 +180,7 @@ end
 -- @treturn simpleui.Widget|nil
 -- @see simpleui.lookup
 function Widget:lookup(id)
-	for _, child in self:children() do
+	for child in self:children() do
 		local found = child:lookup(id)
 		if found then
 			return found
@@ -192,11 +192,17 @@ function Widget:lookup(id)
 end
 
 ---
+-- @tparam ?boolean reversed If true, iterate in reversed order.
 -- @treturn function iter
--- @treturn table self
--- @treturn nil
-function Widget:children()
-	return ipairs(self)
+function Widget:children(reversed)
+	local len = #self
+	local index = reversed and len or 1
+	local step = reversed and -1 or 1
+	return function()
+		local c, i = self[index], index
+		index = index + step
+		return c, i
+	end
 end
 
 ---
@@ -208,7 +214,7 @@ end
 function Widget:hittest(x, y)
 	if not self.enabled then return nil end
 	x, y = x-self.x, y-self.y
-	for _, child in self:children() do
+	for child in self:children(true) do
 		local found, rx, ry = child:hittest(x, y)
 		if found then
 			return found, rx, ry
@@ -375,7 +381,7 @@ function Widget:draw()
 	gfx.push()
 	gfx.translate(self.x, self.y)
 	self:paintbg()
-	for _, child in self:children() do
+	for child in self:children() do
 		child:draw()
 	end
 	self:paintfg()
@@ -433,7 +439,7 @@ end
 ---
 -- @tparam number dtime
 function Widget:update(dtime)
-	for _, child in self:children() do
+	for child in self:children() do
 		child:update(dtime)
 	end
 end

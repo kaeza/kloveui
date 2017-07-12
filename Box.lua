@@ -24,7 +24,7 @@ function Box:layout()
 	local rest = ((v and self.h-pt-pb or self.w-pl-pr)
 			- ((#self-1)*self.spacing))
 	local nexp = 0
-	for _, child in self:children() do
+	for child in self:children() do
 		local ml, mt, mr, mb = child:margins()
 		if child.expand then
 			nexp = nexp + 1
@@ -33,7 +33,7 @@ function Box:layout()
 		end
 	end
 	local x, y, expsize = pl, pt, rest/nexp
-	for _, child in self:children() do
+	for child in self:children() do
 		local minw, minh = child:minsize()
 		local ml, mt, mr, mb = child:margins()
 		local w, h, _
@@ -50,7 +50,7 @@ end
 function Box:calcminsize()
 	local v = self.mode == "v"
 	local w, h = 0, 0
-	for _, child in self:children() do
+	for child in self:children() do
 		local cw, ch = child:minsize()
 		local ml, mt, mr, mb = child:margins()
 		w = (v and max(w, cw) or w+cw)+ml+mr
