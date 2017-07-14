@@ -21,9 +21,8 @@ local Option = Check:extend("simpleui.Option")
 ---
 -- Group of this option.
 --
--- @tparam any group Default is an unique value. This default value is
---  currently a table, but it's an implementation detail.
-Option.group = ({})
+-- @tfield any group Default is the empty string.
+Option.group = ""
 
 function Option:paintcheck(value, x, y, size)
 	size = size/2
