@@ -25,6 +25,8 @@ local Check = Button:extend("simpleui.Check")
 -- @tfield boolean value Default is false.
 Check.value = false
 
+Check.texthalign = 0
+
 function Check:calcminsize()
 	local font, text = self.font or gfx.getFont(), self.text
 	local tw, th = font:getWidth(text), font:getHeight(text)
