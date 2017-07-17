@@ -23,6 +23,8 @@ local Widget = require "simpleui.Widget"
 
 local Entry = Widget:extend("simpleui.Entry")
 
+local ibeam
+
 Entry.canfocus = true
 
 local utf8 = require "utf8"
@@ -130,6 +132,15 @@ function Entry:mousemoved(x, y, dx, dy)
 		x = self:postoindex(x)
 		self.index = x
 	end
+end
+
+function Entry:mouseenter()
+	ibeam = ibeam or love.mouse.getSystemCursor("ibeam")
+	love.mouse.setCursor(ibeam)
+end
+
+function Entry:mouseleave()
+	love.mouse.setCursor()
 end
 
 function Entry:keypressed(key)
