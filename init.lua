@@ -52,7 +52,7 @@ end
 -- @tfield ?number b Bottom.
 
 local rootwidget
-local mousewidget, mousewidgetx, mousewidgety
+local hoverwidget, mousewidget, mousewidgetx, mousewidgety
 local focuswidget
 local guiscale
 
@@ -157,6 +157,15 @@ function M.mousemoved(x, y, dx, dy, istouch)
 				dx, dy, istouch)
 	else
 		local wid, rx, ry = getmouse(x, y)
+		if wid ~= hoverwidget then
+			if hoverwidget then
+				hoverwidget:mouseleave()
+			end
+			hoverwidget = wid
+			if wid then
+				wid:mouseenter()
+			end
+		end
 		if wid then
 			wid:mousemoved(rx, ry, dx, dy, istouch)
 		end
