@@ -480,7 +480,13 @@ end
 -- @see size
 -- @see maxsize
 function Widget:calcmaxsize()
-	return math.huge, math.huge
+	local w, h
+	if self.__refs.parent then
+		w, h = self.__refs.parent:maxsize()
+	else
+		w, h = love.window.getMode()
+	end
+	return w-self.x, h-self.y
 end
 
 ---
