@@ -175,9 +175,11 @@ function Entry:paintfg()
 	self:drawtext(not self.enabled, self.text,
 			0, 0, self.font,
 			pl, pt, w-pl-pr, h-pt-pb)
-	local th = (self.font or gfx.getFont()):getHeight("Ay")
-	local x = self:indextopos(self.index)
-	gfx.line(x, pt-2, x, th+2)
+	if self.focused then
+		local th = (self.font or gfx.getFont()):getHeight("Ay")
+		local x = self:indextopos(self.index)
+		gfx.line(x, pt-2, x, th+2)
+	end
 	Widget.paintfg(self)
 end
 
