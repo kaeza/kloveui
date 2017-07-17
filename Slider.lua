@@ -11,7 +11,7 @@ local min, max, floor = math.min, math.max, math.floor
 
 local Widget = require "simpleui.Widget"
 
-local Slider = Widget:extend("Slider")
+local Slider = Widget:extend("simpleui.Slider")
 
 ---
 -- Current value for the slider.
@@ -125,10 +125,10 @@ function Slider:calcminsize()
 	end
 end
 
-function Slider:mousepressed(x, _, b)
+function Slider:mousepressed(x, y, b)
 	if b == self.LMB then
 		self._pressed = true
-		self:mousemoved(x)
+		self:mousemoved(x, y)
 	end
 end
 
