@@ -374,16 +374,16 @@ end
 function Widget:hittest(x, y)
 	if not self.enabled then return nil end
 	x, y = x-self.x, y-self.y
+	if not self:inside(x, y) then
+		return
+	end
 	for child in self:children(true) do
 		local found, rx, ry = child:hittest(x, y)
 		if found then
 			return found, rx, ry
 		end
 	end
-	if self:inside(x, y) then
-		return self, x, y
-	end
-	return nil
+	return self, x, y
 end
 
 ---
