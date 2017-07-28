@@ -155,6 +155,15 @@ function Entry:mouseleave()
 	love.mouse.setCursor(self._oldcursor)
 end
 
+function Entry:focusgot()
+	self._hadtextinput = love.keyboard.hasTextInput()
+	love.keyboard.setTextInput(true)
+end
+
+function Entry:focuslost()
+	love.keyboard.setTextInput(self._hadtextinput)
+end
+
 function Entry:keypressed(key)
 	if key == "backspace" then
 		if self.index < 1 then return end
