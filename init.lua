@@ -270,33 +270,66 @@ function simpleui.getfocus()
 	return old
 end
 
+local callbacks = {
+	"draw",
+	"update",
+	"mousepressed",
+	"mousereleased",
+	"mousemoved",
+	"wheelmoved",
+	"keypressed",
+	"keyreleased",
+	"textinput",
+	"resize",
+}
+
 ---
 -- Run the GUI.
 --
 -- Sets the specified widget as the "root" of the widget hierarchy, sets the
--- required `love` callbacks, then returns. The top-level LÖVE event loop then
+-- required `love` callbacks, then calls `love.run`. The LÖVE event loop then
 -- takes care to call back into this module to handle events.
+--
+-- This method blocks until a "quit" event is received, and returns whatever
+-- exit status is passed to `love.event.quit`.
 --
 -- @tparam simpleui.Widget root Root of the widget hierarchy.
 -- @tparam ?number scale GUI scaling factor. Default is 1.
-function simpleui.run(root, scale)
+-- @treturn ?number App exit status (return value of `love.run`).
+function simpleui.runsub(root, scale)
+	local old = { }
 	rootwidget = root
 	guiscale = scale or 1
 	mousewidget = nil
 	focuswidget = nil
-	love.draw = simpleui.draw
-	love.update = simpleui.update
-	love.mousepressed = simpleui.mousepressed
-	love.mousereleased = simpleui.mousereleased
-	love.mousemoved = simpleui.mousemoved
-	love.wheelmoved = simpleui.wheelmoved
-	love.keypressed = simpleui.keypressed
-	love.keyreleased = simpleui.keyreleased
-	love.textinput = simpleui.textinput
-	love.resize = simpleui.resize
+	for _, k in ipairs(callbacks) do
+		old[k] = love[k]
+		love[k] = simpleui[k]
+	end
 	local ww, wh = love.window.getMode()
+	local hasrep = love.keyboard.hasKeyRepeat()
 	love.keyboard.setKeyRepeat(true)
-	love.resize(ww, wh)
+	simpleui.resize(ww, wh)
+	local function bail(...)
+		rootwidget = nil
+		love.keyboard.setKeyRepeat(hasrep)
+		for _, k in ipairs(callbacks) do
+			love[k] = old[k]
+		end
+		return ...
+	end
+	return bail(love.run())
+end
+
+---
+-- Run the GUI.
+--
+-- Equivalent to `love.event.quit(simpleui.runsub(...))`.
+--
+-- @tparam simpleui.Widget root Root of the widget hierarchy.
+-- @tparam ?number scale GUI scaling factor. Default is 1.
+function simpleui.run(root, scale)
+	return love.event.quit(simpleui.runsub(root, scale))
 end
 
 return simpleui
