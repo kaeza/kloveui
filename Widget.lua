@@ -712,6 +712,30 @@ function Widget:setfocus()
 end
 
 ---
+-- Run this widget.
+--
+-- Equivalent to `simpleui.run(widget, ...)`.
+--
+-- @tparam ?number scale GUI scaling factor. Default is 1.
+-- @treturn ?number App exit status (return value of `love.run`).
+-- @see simpleui.run
+function Widget:run(scale)
+	return require("simpleui").run(self, scale)
+end
+
+---
+-- Run this widget.
+--
+-- Equivalent to `simpleui.runsub(widget, ...)`.
+--
+-- @tparam ?number scale GUI scaling factor. Default is 1.
+-- @treturn ?number App exit status (return value of `love.run`).
+-- @see simpleui.runsub
+function Widget:runsub(scale)
+	return require("simpleui").runsub(self, scale)
+end
+
+---
 -- Called by the system when this widget receives the input focus.
 function Widget:focusgot()
 end
