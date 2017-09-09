@@ -60,7 +60,7 @@ function Slider:setvalue(v, force)
 	v = max(0, min(1, v))
 	if force or v ~= self.value then
 		self.value = v
-		self:valuechanged()
+		self:valuechanged(old)
 	end
 	return old
 end
@@ -113,8 +113,9 @@ end
 ---
 -- Called when the value of the bar changes.
 --
+-- @tparam number oldval Old value.
 -- @see value
-function Slider:valuechanged()
+function Slider:valuechanged(oldval)
 end
 
 function Slider:calcminsize()
