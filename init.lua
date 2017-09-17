@@ -265,9 +265,7 @@ end
 -- @treturn simpleui.Widget|nil focus A widget, or nil if no widget has the
 --  input focus.
 function simpleui.getfocus()
-	local old = focuswidget
-	focuswidget = wid
-	return old
+	return focuswidget
 end
 
 local callbacks = {
