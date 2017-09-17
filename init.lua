@@ -208,10 +208,11 @@ end
 -- Set as same-named `love` callback by `run`.
 --
 -- @tparam love.keyboard.KeyConstant key Key name.
+-- @tparam love.keyboard.Scancode scan Key scan code.
 -- @tparam boolean isrep Whether this event was generated due to key repeat.
-function simpleui.keypressed(key, isrep)
+function simpleui.keypressed(key, scan, isrep)
 	if focuswidget then
-		focuswidget:keypressed(key, isrep)
+		focuswidget:keypressed(key, scan, isrep)
 	end
 end
 
@@ -221,9 +222,10 @@ end
 -- Set as same-named `love` callback by `run`.
 --
 -- @tparam love.keyboard.KeyConstant key Key name.
-function simpleui.keyreleased(key)
+-- @tparam love.keyboard.Scancode scan Key scan code.
+function simpleui.keyreleased(key, scan)
 	if focuswidget then
-		focuswidget:keyreleased(key)
+		focuswidget:keyreleased(key, scan)
 	end
 end
 

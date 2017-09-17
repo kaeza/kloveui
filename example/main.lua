@@ -251,12 +251,12 @@ local root; root = simpleui.Box {
 -- If you need to modify event handlers, remember to call back into the old
 -- function if you don't handle the event yourself.
 local oldkeypressed = simpleui.keypressed
-function simpleui.keypressed(key, isrep)
+function simpleui.keypressed(key, scan, isrep)
 	if key == "escape" then
 		love.event.quit()
 		return
 	end
-	return oldkeypressed(key, isrep)
+	return oldkeypressed(key, scan, isrep)
 end
 
 local function main()

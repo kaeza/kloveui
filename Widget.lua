@@ -802,15 +802,17 @@ end
 -- Called by the system to handle keyboard input.
 --
 -- @tparam love.keyboard.KeyConstant key Key name.
+-- @tparam love.keyboard.Scancode scan Key scan code.
 -- @tparam boolean isrep Whether this event was generated due to key repeat.
-function Widget:keypressed(key, isrep)
+function Widget:keypressed(key, scan, isrep)
 end
 
 ---
 -- Called by the system to handle keyboard input.
 --
 -- @tparam love.keyboard.KeyConstant key Key name.
-function Widget:keyreleased(key)
+-- @tparam love.keyboard.Scancode scan Key scan code.
+function Widget:keyreleased(key, scan)
 end
 
 ---
