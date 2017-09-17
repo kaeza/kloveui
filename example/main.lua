@@ -1,9 +1,8 @@
 
 -- Example use of SimpleUI.
 
-local gfx = love.graphics
-
-local sui = require "simpleui"
+local graphics = love.graphics
+local simpleui = require "simpleui"
 
 -- Let's override `print` to print source location.
 local lprint = print
@@ -19,14 +18,14 @@ end
 
 -- Example of custom widget classes.
 
-local Example = sui.Widget:extend("Example")
+local Example = simpleui.Widget:extend("Example")
 
 local function drawrect(label, cr, cg, cb, x, y, w, h)
-	gfx.setColor(cr, cg, cb, 128)
-	gfx.rectangle("fill", x, y, w, h)
-	gfx.setColor(cr, cg, cb)
-	gfx.rectangle("line", x, y, w, h)
-	gfx.print(label, x+2, y+2)
+	graphics.setColor(cr, cg, cb, 128)
+	graphics.rectangle("fill", x, y, w, h)
+	graphics.setColor(cr, cg, cb)
+	graphics.rectangle("line", x, y, w, h)
+	graphics.print(label, x+2, y+2)
 end
 
 -- We draw our widget "background" here.
@@ -60,15 +59,15 @@ end
 function Example:paintfg()
 	-- We should ALWAYS set colors explicitly. SimpleUI does not
 	-- save or restore any state besides the transformation matrix.
-	gfx.setColor(255, 255, 255)
+	graphics.setColor(255, 255, 255)
 	self:drawtext(not self.enabled, self.text, .5, .5)
 	if self._mousex then
 		if self:inside(self._mousex, self._mousey) then
-			gfx.setColor(255, 255, 0)
+			graphics.setColor(255, 255, 0)
 		else
-			gfx.setColor(255, 0, 0)
+			graphics.setColor(255, 0, 0)
 		end
-		gfx.circle("fill", self._mousex, self._mousey, 9)
+		graphics.circle("fill", self._mousex, self._mousey, 9)
 	end
 end
 
@@ -101,22 +100,22 @@ end
 
 -- Our "root" widget.
 -- You will notice the GUI description is like a nice tree structure.
-local root; root = sui.Box {
+local root; root = simpleui.Box {
 	id = "root",
 	mode = "v",
-	sui.Box {
+	simpleui.Box {
 		mode = "h",
-		sui.Button {
+		simpleui.Button {
 			text = "Disabled",
 			enabled = false,
 		},
-		sui.Button {
+		simpleui.Button {
 			text = "Hello, world!",
 		},
-		sui.Button {
+		simpleui.Button {
 			text = "Click me to add more buttons!",
 			activated = function()
-				root:addchild(sui.Button {
+				root:addchild(simpleui.Button {
 					expand=true,
 					text="Click me to remove me!",
 					activated = function(_self)
@@ -125,58 +124,58 @@ local root; root = sui.Box {
 				})
 			end,
 		},
-		sui.Button {
+		simpleui.Button {
 			text = "Re-layout",
 			activated = function()
 				root:layout()
 			end,
 		},
 	},
-	sui.Box {
+	simpleui.Box {
 		mode = "h",
 		spacing = 8,
 		padding = 8,
-		sui.Label { text="Example of an horizontal box." },
-		sui.Button { text="Yes" },
-		sui.Button { text="No" },
+		simpleui.Label { text="Example of an horizontal box." },
+		simpleui.Button { text="Yes" },
+		simpleui.Button { text="No" },
 	},
-	sui.Box {
+	simpleui.Box {
 		mode = "h",
 		spacing = 8,
 		padding = 8,
 		-- If we want to right-align items, we can add a dummy
 		-- expandable widget to the start.
-		sui.Widget { expand=true, __debug=true },
-		sui.Label { text="Example of an horizontal box." },
-		sui.Button { text="Yes" },
-		sui.Button { text="No" },
+		simpleui.Widget { expand=true, __debug=true },
+		simpleui.Label { text="Example of an horizontal box." },
+		simpleui.Button { text="Yes" },
+		simpleui.Button { text="No" },
 	},
-	sui.Box {
+	simpleui.Box {
 		mode = "h",
 		spacing = 8,
 		padding = 8,
-		sui.Check { text="Check 1" },
-		sui.Check { text="Check 2", value=true },
-		sui.Check { text="Check 3" },
-		sui.Option { text="Option 1" },
-		sui.Option { text="Option 2", value=true },
-		sui.Option { text="Option 3", group="bar" },
-		sui.Option { text="Option 4", value=true, group="bar" },
+		simpleui.Check { text="Check 1" },
+		simpleui.Check { text="Check 2", value=true },
+		simpleui.Check { text="Check 3" },
+		simpleui.Option { text="Option 1" },
+		simpleui.Option { text="Option 2", value=true },
+		simpleui.Option { text="Option 3", group="bar" },
+		simpleui.Option { text="Option 4", value=true, group="bar" },
 	},
-	sui.Box {
+	simpleui.Box {
 		mode = "h",
 		spacing = 8,
 		padding = 8,
-		sui.Label { text="Sliders" },
-		sui.Label { text="Free" },
-		sui.Slider {
+		simpleui.Label { text="Sliders" },
+		simpleui.Label { text="Free" },
+		simpleui.Slider {
 			expand = true,
 			valuechanged = function(_self)
 				print(_self.value)
 			end,
 		},
-		sui.Label { text="Snapping" },
-		sui.Slider {
+		simpleui.Label { text="Snapping" },
+		simpleui.Slider {
 			expand = true,
 			increment = 0.1,
 			valuechanged = function(_self)
@@ -184,13 +183,13 @@ local root; root = sui.Box {
 			end,
 		},
 	},
-	sui.Entry {
+	simpleui.Entry {
 		text = "An editable text entry. ãéìôüñ",
 		committed = function(_self)
 			print(_self.text)
 		end,
 	},
-	sui.Box {
+	simpleui.Box {
 		mode = "h",
 		-- Let's test our example.
 		Example {
@@ -207,7 +206,7 @@ local root; root = sui.Box {
 			-- We can add children to our widget, but we must
 			-- explicitly set their positions and dimensions,
 			-- unless we override `simpleui.Widget:layout`.
-			sui.Button {
+			simpleui.Button {
 				x = 40,
 				y = 60,
 				w = 80,
@@ -216,7 +215,7 @@ local root; root = sui.Box {
 			},
 		},
 		-- You can also override some methods in-place.
-		sui.Widget {
+		simpleui.Widget {
 			expand = true,
 
 			-- Let's specify minimum size directly.
@@ -243,26 +242,25 @@ local root; root = sui.Box {
 						("%.2f"):format(_self._c), .5, .5)
 				-- It's important to call the method on the base class to
 				-- make `__debug` work.
-				sui.Widget.paintfg(_self)
+				simpleui.Widget.paintfg(_self)
 			end,
 		},
 	},
 }
 
--- Run our UI. This modifies the global `love` event callbacks, sets
--- the specified widget as the root, and returns. The LÖVE event loop
--- then takes care of the rest.
-sui.run(root)
-
--- If you need to modify event handlers, remember to do it *after*
--- calling `simpleui.run`, and to call back into the old function
--- if you don't handle the event yourself.
-local oldkeypressed = love.keypressed or function() end
-function love.keypressed(k)
-	if k == "escape" then
+-- If you need to modify event handlers, remember to call back into the old
+-- function if you don't handle the event yourself.
+local oldkeypressed = simpleui.keypressed
+function simpleui.keypressed(key, isrep)
+	if key == "escape" then
 		love.event.quit()
 		return
 	end
-	-- Alternatively, `return sui.keypressed(k)`.
-	return oldkeypressed(k)
+	return oldkeypressed(key, isrep)
 end
+
+local function main()
+	return root:run()
+end
+
+return main()
