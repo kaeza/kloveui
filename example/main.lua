@@ -120,8 +120,11 @@ local root; root = simpleui.Box {
 					text="Click me to remove me!",
 					activated = function(_self)
 						root:removechild(_self)
+						root:layout()
 					end,
 				})
+				-- We must call `layout` after adding/removing children.
+				root:layout()
 			end,
 		},
 		simpleui.Button {
@@ -260,6 +263,11 @@ function simpleui.keypressed(key, scan, isrep)
 end
 
 local function main()
+	-- We must call `layout` to let boxes and other layout widgets do their
+	-- job. We only need to call this for the root; it is expected it will
+	-- call `rect` (which calls `layout` after positioning) to position its
+	-- children as needed .
+	root:layout()
 	return root:run()
 end
 

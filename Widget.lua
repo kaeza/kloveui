@@ -245,7 +245,6 @@ function Widget:init(params)
 	for k, v in pairs(params) do
 		self[k] = v
 	end
-	self:layout()
 end
 
 local function repr(x)
@@ -274,7 +273,6 @@ end
 function Widget:addchild(child, pos)
 	child.__refs.parent = self
 	table.insert(self, pos or #self+1, child)
-	self:layout()
 	return child
 end
 
@@ -287,13 +285,11 @@ end
 function Widget:removechild(child)
 	if type(child) == "number" then
 		local r = table.remove(self, child)
-		self:layout()
 		return r
 	else
 		for c, i in self:children() do
 			if rawequal(c, child) then
 				local r = table.remove(self, i)
-				self:layout()
 				return r
 			end
 		end
