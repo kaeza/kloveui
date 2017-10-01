@@ -154,13 +154,15 @@ function Entry:mouseleave()
 	end
 end
 
+local hadtextinput
+
 function Entry:focusgot()
-	self._hadtextinput = love.keyboard.hasTextInput()
+	hadtextinput = love.keyboard.hasTextInput()
 	love.keyboard.setTextInput(true)
 end
 
 function Entry:focuslost()
-	love.keyboard.setTextInput(self._hadtextinput)
+	love.keyboard.setTextInput(hadtextinput)
 end
 
 function Entry:keypressed(key)
