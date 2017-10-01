@@ -135,24 +135,23 @@ function Entry:mousemoved(x, y, dx, dy)
 end
 
 function Entry:mouseenter()
-	if ibeam == nil then
-		-- `getSystemCursor` raises an error under (at least) Android.
-		local ok, c = pcall(love.mouse.getSystemCursor, "ibeam")
-		if ok then
-			ibeam = c or false
-		else
-			-- We tried to load, but failed.
-			ibeam = false
+	if love.mouse.hasCursor() then
+		if not ibeam then
+			ibeam = love.mouse.getSystemCursor("ibeam")
 		end
-	end
-	self._oldcursor = love.mouse.getCursor()
-	if ibeam then
-		love.mouse.setCursor(ibeam)
+		oldcursor = love.mouse.getCursor()
+		if ibeam then
+			love.mouse.setCursor(ibeam)
+		end
 	end
 end
 
+local oldcursor
+
 function Entry:mouseleave()
-	love.mouse.setCursor(self._oldcursor)
+	if love.mouse.hasCursor() then
+		love.mouse.setCursor(oldcursor)
+	end
 end
 
 function Entry:focusgot()
