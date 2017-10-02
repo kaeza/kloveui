@@ -209,7 +209,9 @@ function simpleui.wheelmoved(dx, dy)
 	if mousewidget then
 		mousewidget:wheelmoved(dx, dy)
 	else
-		local wid = getmouse(love.mouse.getPosition())
+		local x, y = love.mouse.getPosition()
+		x, y = x/guiscale, y/guiscale
+		local wid = getmouse(x, y)
 		if wid then
 			wid:wheelmoved(dx, dy)
 		end
