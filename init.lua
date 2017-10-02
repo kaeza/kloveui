@@ -250,12 +250,12 @@ end
 function simpleui.setfocus(wid)
 	local old = focuswidget
 	if old then
-		old.focused = false
+		old.hasfocus = false
 		old:focuslost()
 	end
 	focuswidget = wid
 	if wid then
-		wid.focused = true
+		wid.hasfocus = true
 		wid:focusgot()
 	end
 	return old

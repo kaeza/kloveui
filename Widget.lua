@@ -165,9 +165,9 @@ Widget.canfocus = false
 ---
 -- Whether or not the widget currently has the input focus.
 --
--- @tfield boolean focused Default is false.
+-- @tfield boolean hasfocus Default is false.
 -- @see simpleui.setfocus
-Widget.focused = false
+Widget.hasfocus = false
 
 ---
 -- Table to hold weak references.
