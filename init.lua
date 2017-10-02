@@ -51,10 +51,24 @@ end
 -- @tfield ?number r Right.
 -- @tfield ?number b Bottom.
 
+---
+-- Enum representing shift state.
+--
+-- @table ShiftState
+-- @field c Control key is down.
+-- @field a Alt key is down.
+-- @field s Shift key is down.
+-- @field ca Control and Alt keys are down.
+-- @field cs Control and Shift keys are down.
+-- @field as Alt and Shift keys are down.
+-- @field cas Control, Alt and Shift keys are down.
+
 local rootwidget
 local hoverwidget, mousewidget, mousewidgetx, mousewidgety
 local focuswidget
 local guiscale
+
+local ctrl, alt, shift
 
 ---
 -- Look up a widget by ID.
@@ -68,6 +82,18 @@ local guiscale
 -- @see simpleui.Widget:lookup
 function simpleui.lookup(id)
 	return rootwidget:lookup(id)
+end
+
+---
+-- Get shift state.
+--
+-- @treturn ShiftState Shift state.
+function simpleui.getshiftstate()
+	return table.concat({
+		ctrl  and "c" or "",
+		alt   and "a" or "",
+		shift and "s" or "",
+	})
 end
 
 ---
@@ -211,8 +237,15 @@ end
 -- @tparam love.keyboard.Scancode scan Key scan code.
 -- @tparam boolean isrep Whether this event was generated due to key repeat.
 function simpleui.keypressed(key, scan, isrep)
+	if key == "lshift" or key == "rshift" then
+		shift = true
+	elseif key == "lalt" or key == "ralt" then
+		alt = true
+	elseif key == "lctrl" or key == "rctrl" then
+		ctrl = true
+	end
 	if focuswidget then
-		focuswidget:keypressed(key, scan, isrep)
+		focuswidget:keypressed(key, scan, isrep, simpleui.getshiftstate())
 	end
 end
 
@@ -224,8 +257,15 @@ end
 -- @tparam love.keyboard.KeyConstant key Key name.
 -- @tparam love.keyboard.Scancode scan Key scan code.
 function simpleui.keyreleased(key, scan)
+	if key == "lshift" or key == "rshift" then
+		shift = nil
+	elseif key == "lalt" or key == "ralt" then
+		alt = nil
+	elseif key == "lctrl" or key == "rctrl" then
+		ctrl = nil
+	end
 	if focuswidget then
-		focuswidget:keyreleased(key, scan)
+		focuswidget:keyreleased(key, scan, simpleui.getshiftstate())
 	end
 end
 

@@ -800,7 +800,8 @@ end
 -- @tparam love.keyboard.KeyConstant key Key name.
 -- @tparam love.keyboard.Scancode scan Key scan code.
 -- @tparam boolean isrep Whether this event was generated due to key repeat.
-function Widget:keypressed(key, scan, isrep)
+-- @tparam simpleui.ShiftState Shift state.
+function Widget:keypressed(key, scan, isrep, shift)
 end
 
 ---
@@ -808,7 +809,8 @@ end
 --
 -- @tparam love.keyboard.KeyConstant key Key name.
 -- @tparam love.keyboard.Scancode scan Key scan code.
-function Widget:keyreleased(key, scan)
+-- @tparam simpleui.ShiftState Shift state.
+function Widget:keyreleased(key, scan, shift)
 end
 
 ---
