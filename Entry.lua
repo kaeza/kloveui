@@ -208,7 +208,7 @@ function Entry:paintfg()
 	self:drawtext(not self.enabled, self.text,
 			0, 0, self.font,
 			pl, pt, w-pl-pr, h-pt-pb)
-	if self.focused then
+	if self.hasfocus then
 		local th = (self.font or gfx.getFont()):getHeight("Ay")
 		local x = self:indextopos(self.index)
 		gfx.line(x, pt-2, x, th+2)
