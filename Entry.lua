@@ -134,6 +134,8 @@ function Entry:mousemoved(x, y, dx, dy)
 	end
 end
 
+local oldcursor
+
 function Entry:mouseenter()
 	if love.mouse.hasCursor() then
 		if not ibeam then
@@ -145,8 +147,6 @@ function Entry:mouseenter()
 		end
 	end
 end
-
-local oldcursor
 
 function Entry:mouseleave()
 	if love.mouse.hasCursor() then
