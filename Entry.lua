@@ -32,9 +32,15 @@ local ustroffset = utf8.offset
 local ustrlen = utf8.len
 
 local function ustrsub(str, i, j)
-	if j<i or i>ustrlen(str) then return "" end
+	local len = ustrlen(str)
+	i, j = i or 1, j or len
+	if j < i or i > len then
+		return ""
+	elseif i == 0 then
+		i = 1
+	end
 	i = ustroffset(str, i)
-	j = ustroffset(str, j)
+	j = ustroffset(str, j+1) or #str+1
 	return str:sub(i, j-1)
 end
 
@@ -74,10 +80,10 @@ function Entry:postoindex(x)
 	local pl = self:paddings()
 	local text = self.text
 	local len = ustrlen(text)
-	x = x-pl
-	if x<0 then
+	x = x - pl
+	if x < 0 then
 		return 0
-	elseif x>=self.w then
+	elseif x >= self.w then
 		return len
 	end
 	local font = self.font or gfx.getFont()
@@ -88,7 +94,7 @@ function Entry:postoindex(x)
 			return i
 		end
 	end
-	return len+1
+	return len
 end
 
 ---
@@ -167,23 +173,31 @@ end
 
 function Entry:keypressed(key)
 	if key == "backspace" then
-		if self.index < 1 then return end
+		if self.index < 1 then
+			return
+		end
 		self.text = (ustrsub(self.text, 1, self.index-1)
-				..ustrsub(self.text, self.index, ustrlen(self.text)+1))
+				..ustrsub(self.text, self.index+1))
 		self.index = self.index - 1
 	elseif key == "delete" then
-		if self.index > ustrlen(self.text) then return end
+		if self.index > ustrlen(self.text) then
+			return
+		end
 		self.text = (ustrsub(self.text, 1, self.index)
-				..ustrsub(self.text, self.index+1, ustrlen(self.text)+1))
+				..ustrsub(self.text, self.index+2))
 	elseif key == "home" then
 		self.index = 0
 	elseif key == "end" then
-		self.index = ustrlen(self.text)+1
+		self.index = ustrlen(self.text)
 	elseif key == "left" then
-		if self.index <= 0 then return end
+		if self.index <= 0 then
+			return
+		end
 		self.index = self.index - 1
 	elseif key == "right" then
-		if self.index > ustrlen(self.text) then return end
+		if self.index >= ustrlen(self.text) then
+			return
+		end
 		self.index = self.index + 1
 	elseif key == "return" or key == "kpenter" then
 		self:committed()
@@ -193,7 +207,7 @@ end
 function Entry:textinput(text)
 	local len = ustrlen(text)
 	self.text = (ustrsub(self.text, 1, self.index)..text
-			..ustrsub(self.text, self.index, ustrlen(self.text)+1))
+			..ustrsub(self.text, self.index+1))
 	self.index = self.index + len
 end
 
