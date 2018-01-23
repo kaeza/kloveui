@@ -66,20 +66,20 @@ end
 function Button:mousepressed(x, y, b)
 	if self:inside(x, y) then
 		self.pressed = b == self.LMB
+		self.hasmouse = self.pressed
 	end
 end
 
 function Button:mousereleased(x, y, b)
-	if self.pressed and b == self.LMB and self:inside(x, y) then
+	if self.hasmouse and b == self.LMB and self:inside(x, y) then
 		self:activated()
 	end
 	self.pressed = false
+	self.hasmouse = false
 end
 
 function Button:mousemoved(x, y, dx, dy)
-	if not self:inside(x, y) then
-		self.pressed = false
-	end
+	self.pressed = self.hasmouse and self:inside(x, y)
 end
 
 function Button:paintbg()
