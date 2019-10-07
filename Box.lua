@@ -2,7 +2,7 @@
 ---
 -- Widget that lays out its children horizontally or vertically.
 --
--- Childrens are laid out left to right or top to bottom. Those whose `expand`
+-- Children are laid out left to right or top to bottom. Those whose `expand`
 -- property is false are placed at their minimum size; the remaining space is
 -- shared equally among those whose `expand` property is true.
 --

@@ -17,6 +17,7 @@ function print(...)
 end
 
 -- Example of custom widget classes.
+-- See `simpleui.Widget`.
 
 local Example = simpleui.Widget:extend("Example")
 
@@ -29,6 +30,7 @@ local function drawrect(label, cr, cg, cb, x, y, w, h)
 end
 
 -- We draw our widget "background" here.
+-- See `simpleui.Widget:paintbg`.
 function Example:paintbg()
 	-- As a test, let's draw our layout parameters.
 
@@ -56,6 +58,7 @@ function Example:paintbg()
 end
 
 -- We draw our widget "foreground" here.
+-- See `simpleui.Widget:paintfg`.
 function Example:paintfg()
 	-- We should ALWAYS set colors explicitly. SimpleUI does not
 	-- save or restore any state besides the transformation matrix.
@@ -73,11 +76,15 @@ end
 
 -- We should define this method if we want to add it to a
 -- container and we don't explicitly set `minw` and `minh`.
+-- See `simpleui.Widget:calcminsize`.
+-- See `simpleui.Widget.minw`.
+-- See `simpleui.Widget.minh`.
 function Example:calcminsize()
 	return 320, 240
 end
 
 -- We can handle mouse events.
+-- See `simpleui.Widget:mousepressed`.
 function Example:mousepressed(x, y, b)
 	-- Note: Since LÖVE developers tend to change constants
 	-- between releases, the `simpleui.Widget` class exports
@@ -88,23 +95,27 @@ function Example:mousepressed(x, y, b)
 	end
 end
 
+-- See `simpleui.Widget:mousemoved`.
 function Example:mousemoved(x, y)
 	if self._mousex then
 		self._mousex, self._mousey = x, y
 	end
 end
 
+-- See `simpleui.Widget:mousereleased`.
 function Example:mousereleased()
 	self._mousex, self._mousey = nil, nil
 end
 
 -- Our "root" widget.
 -- You will notice the GUI description is like a nice tree structure.
+-- See `simpleui.Box`.
 local root; root = simpleui.Box {
 	id = "root",
 	mode = "v",
 	simpleui.Box {
 		mode = "h",
+		-- See `simpleui.Button`.
 		simpleui.Button {
 			text = "Disabled",
 			enabled = false,
@@ -138,6 +149,7 @@ local root; root = simpleui.Box {
 		mode = "h",
 		spacing = 8,
 		padding = 8,
+		-- See `simpleui.Label`.
 		simpleui.Label { text="Example of an horizontal box." },
 		simpleui.Button { text="Yes" },
 		simpleui.Button { text="No" },
@@ -157,9 +169,11 @@ local root; root = simpleui.Box {
 		mode = "h",
 		spacing = 8,
 		padding = 8,
+		-- See `simpleui.Check`.
 		simpleui.Check { text="Check 1" },
 		simpleui.Check { text="Check 2", value=true },
 		simpleui.Check { text="Check 3" },
+		-- See `simpleui.Option`.
 		simpleui.Option { text="Option 1" },
 		simpleui.Option { text="Option 2", value=true },
 		simpleui.Option { text="Option 3", group="bar" },
@@ -171,6 +185,7 @@ local root; root = simpleui.Box {
 		padding = 8,
 		simpleui.Label { text="Sliders" },
 		simpleui.Label { text="Free" },
+		-- See `simpleui.Slider`.
 		simpleui.Slider {
 			expand = true,
 			valuechanged = function(_self)
@@ -186,6 +201,7 @@ local root; root = simpleui.Box {
 			end,
 		},
 	},
+	-- See `simpleui.Entry`.
 	simpleui.Entry {
 		text = "An editable text entry. ãéìôüñ",
 		committed = function(_self)
@@ -253,6 +269,7 @@ local root; root = simpleui.Box {
 
 -- If you need to modify event handlers, remember to call back into the old
 -- function if you don't handle the event yourself.
+-- See `simpleui.keypressed`.
 local oldkeypressed = simpleui.keypressed
 function simpleui.keypressed(key, scan, isrep)
 	if key == "escape" then
@@ -267,7 +284,9 @@ local function main()
 	-- job. We only need to call this for the root; it is expected it will
 	-- call `rect` (which calls `layout` after positioning) to position its
 	-- children as needed .
+	-- See `simpleui.Widget:layout`.
 	root:layout()
+	-- See `simpleui.Widget:run`.
 	return root:run()
 end
 
