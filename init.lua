@@ -9,7 +9,11 @@
 
 local simpleui = { }
 
-local gfx = love.graphics
+local love = love
+local event = love.event
+local timer = love.timer
+local graphics = love.graphics
+local keyboard = love.keyboard
 
 local name = ...
 
@@ -101,10 +105,10 @@ end
 --
 -- Set as same-named `love` callback by `run`.
 function simpleui.draw()
-	gfx.push()
-	gfx.scale(guiscale, guiscale)
+	graphics.push()
+	graphics.scale(guiscale, guiscale)
 	rootwidget:draw()
-	gfx.pop()
+	graphics.pop()
 end
 
 ---
@@ -312,7 +316,7 @@ function simpleui.getfocus()
 	return focuswidget
 end
 
-local callbacks = {
+local handlers = {
 	"draw",
 	"update",
 	"mousepressed",
@@ -324,6 +328,37 @@ local callbacks = {
 	"textinput",
 	"resize",
 }
+
+for i, k in ipairs(handlers) do
+	handlers[i] = nil
+	handlers[k] = function(...)
+		return simpleui[k](...)
+	end
+end
+
+local function mainloop()
+	while true do
+		event.pump()
+		for name, a, b, c, d, e, f in event.poll() do
+			if name == "quit" then
+				if not love.quit or not love.quit() then
+					return a or 0
+				end
+			end
+			local func = handlers[name] or love.handlers[name]
+			if func then
+				func(a, b, c, d, e, f)
+			end
+		end
+		dt = timer.step()
+		simpleui.update(dt)
+		graphics.origin()
+		graphics.clear(graphics.getBackgroundColor())
+		simpleui.draw()
+		graphics.present()
+		timer.sleep(0.001)
+	end
+end
 
 ---
 -- Run the GUI.
@@ -339,28 +374,20 @@ local callbacks = {
 -- @tparam ?number scale GUI scaling factor. Default is 1.
 -- @treturn ?number App exit status (return value of `love.run`).
 function simpleui.runsub(root, scale)
-	local old = { }
 	rootwidget = root
 	guiscale = scale or 1
 	mousewidget = nil
 	focuswidget = nil
-	for _, k in ipairs(callbacks) do
-		old[k] = love[k]
-		love[k] = simpleui[k]
-	end
 	local ww, wh = love.window.getMode()
 	local hasrep = love.keyboard.hasKeyRepeat()
-	love.keyboard.setKeyRepeat(true)
+	keyboard.setKeyRepeat(true)
 	simpleui.resize(ww, wh)
 	local function bail(...)
 		rootwidget = nil
-		love.keyboard.setKeyRepeat(hasrep)
-		for _, k in ipairs(callbacks) do
-			love[k] = old[k]
-		end
+		keyboard.setKeyRepeat(hasrep)
 		return ...
 	end
-	return bail(love.run())
+	return bail(mainloop())
 end
 
 ---

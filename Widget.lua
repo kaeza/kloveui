@@ -97,35 +97,35 @@ Widget.enabled = true
 ---
 -- Color for foreground graphics.
 --
--- @tfield simpleui.Color fgcolor Default is (240, 240, 240).
-Widget.fgcolor = ({ 240, 240, 240 })
+-- @tfield simpleui.Color fgcolor Default is (.95, .95, .95).
+Widget.fgcolor = ({ .95, .95, .95 })
 
 ---
 -- Color for foreground graphics when disabled.
 --
--- @tfield simpleui.Color fgcolordisabled Default is (192, 192, 192).
+-- @tfield simpleui.Color fgcolordisabled Default is (.75, .75, .75).
 -- @see enabled
-Widget.fgcolordisabled = ({ 192, 192, 192 })
+Widget.fgcolordisabled = ({ .75, .75, .75 })
 
 ---
 -- Color for background graphics.
 --
--- @tfield simpleui.Color bgcolor Default is (64, 64, 64).
-Widget.bgcolor = ({ 64, 64, 64 })
+-- @tfield simpleui.Color bgcolor Default is (.25, .25, .25).
+Widget.bgcolor = ({ .25, .25, .25 })
 
 ---
 -- Color for background graphics when raised.
 --
--- @tfield simpleui.Color bgcolorraised Default is (128, 128, 128).
+-- @tfield simpleui.Color bgcolorraised Default is (.5, .5, .5).
 -- @see drawbevel
-Widget.bgcolorraised = ({ 128, 128, 128 })
+Widget.bgcolorraised = ({ .5, .5, .5 })
 
 ---
 -- Color for background graphics when sunken.
 --
--- @tfield simpleui.Color bgcolorsunken
+-- @tfield simpleui.Color bgcolorsunken Default is (.125, .125, .125).
 -- @see drawbevel
-Widget.bgcolorsunken = ({ 32, 32, 32 })
+Widget.bgcolorsunken = ({ .125, .125, .125 })
 
 ---
 -- Color for the border.

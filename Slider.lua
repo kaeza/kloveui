@@ -44,8 +44,8 @@ Slider.anchor = "l"
 ---
 -- Color for the handle while pressed.
 --
--- @tfield simpleui.Color handlecolorpressed Default is (192, 192, 192).
-Slider.handlecolorpressed = ({ 192, 192, 192 })
+-- @tfield simpleui.Color handlecolorpressed Default is (.75, .75, .75).
+Slider.handlecolorpressed = ({ .75, .75, .75 })
 
 ---
 -- Set the slider's value.

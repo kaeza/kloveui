@@ -21,7 +21,7 @@ end
 local Example = simpleui.Widget:extend("Example")
 
 local function drawrect(label, cr, cg, cb, x, y, w, h)
-	graphics.setColor(cr, cg, cb, 128)
+	graphics.setColor(cr, cg, cb, .5)
 	graphics.rectangle("fill", x, y, w, h)
 	graphics.setColor(cr, cg, cb)
 	graphics.rectangle("line", x, y, w, h)
@@ -40,7 +40,7 @@ function Example:paintbg()
 	-- Note that we are technically drawing outside the bounds
 	-- of our widget. SimpleUI does not clip any graphics calls,
 	-- but we should always respect the layout parameters.
-	drawrect("Margin", 255, 128, 128, -ml, -mt, w+ml+mr, h+mt+mb)
+	drawrect("Margin", 1, .5, .5, -ml, -mt, w+ml+mr, h+mt+mb)
 
 	-- Padding in blue.
 	-- We are "inside" the widget here. You will notice mouse
@@ -49,10 +49,10 @@ function Example:paintbg()
 	-- Note that what "padding" means varies from widget to widget.
 	-- For example, buttons add borders around the text, but the
 	-- "button" part is still widget-sized.
-	drawrect("Padding", 128, 128, 255, 0, 0, w, h)
+	drawrect("Padding", .5, .5, 1, 0, 0, w, h)
 
 	-- Content in green.
-	drawrect("Content", 128, 255, 128, pl, pt, w-pl-pr, h-pt-pb)
+	drawrect("Content", .5, 1, .5, pl, pt, w-pl-pr, h-pt-pb)
 end
 
 -- We draw our widget "foreground" here.
@@ -63,9 +63,9 @@ function Example:paintfg()
 	self:drawtext(not self.enabled, self.text, .5, .5)
 	if self._mousex then
 		if self:inside(self._mousex, self._mousey) then
-			graphics.setColor(255, 255, 0)
+			graphics.setColor(1, 1, 0)
 		else
-			graphics.setColor(255, 0, 0)
+			graphics.setColor(1, 0, 0)
 		end
 		graphics.circle("fill", self._mousex, self._mousey, 9)
 	end

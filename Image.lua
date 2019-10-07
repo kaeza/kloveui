@@ -28,8 +28,8 @@ Image.image = nil
 ---
 -- Tint color for the image.
 --
--- @tfield simpleui.Color tintcolor Default is (255, 255, 255).
-Image.tintcolor = ({ 255, 255, 255 })
+-- @tfield simpleui.Color tintcolor Default is (1, 1, 1).
+Image.tintcolor = ({ 1, 1, 1 })
 
 function Image:calcminsize()
 	if not self.image then

@@ -143,7 +143,7 @@ end
 local oldcursor
 
 function Entry:mouseenter()
-	if love.mouse.hasCursor() then
+	if love.mouse.isCursorSupported() then
 		if not ibeam then
 			ibeam = love.mouse.getSystemCursor("ibeam")
 		end
@@ -155,7 +155,7 @@ function Entry:mouseenter()
 end
 
 function Entry:mouseleave()
-	if love.mouse.hasCursor() then
+	if love.mouse.isCursorSupported() then
 		love.mouse.setCursor(oldcursor)
 	end
 end
