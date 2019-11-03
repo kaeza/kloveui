@@ -1,18 +1,19 @@
 
 self = false
+unused_args = false
+
+exclude_files = {
+	"example/kloveui",
+}
 
 read_globals = {
 	"love",
 }
 
 files["example/main.lua"] = {
-	globals = { "love", "print" },
+	globals = { "print" },
 }
 
-files["init.lua"] = {
-	globals = { "love", },
-}
-
-files["*.lua"] = {
-	unused_args = false,
+files["example/conf.lua"] = {
+	globals = { "love" },
 }

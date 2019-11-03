@@ -6,16 +6,16 @@
 -- property is false are placed at their minimum size; the remaining space is
 -- shared equally among those whose `expand` property is true.
 --
--- **Extends:** `simpleui.Widget`
+-- **Extends:** `kloveui.Widget`
 --
--- @classmod simpleui.Box
--- @see simpleui.Widget.expand
+-- @classmod kloveui.Box
+-- @see kloveui.Widget.expand
 
 local max = math.max
 
-local Widget = require "simpleui.Widget"
+local Widget = require "kloveui.Widget"
 
-local Box = Widget:extend("simpleui.Box")
+local Box = Widget:extend("kloveui.Box")
 
 ---
 -- Layout mode.

@@ -2,15 +2,15 @@
 ---
 -- Textual label.
 --
--- **Extends:** `simpleui.Widget`
+-- **Extends:** `kloveui.Widget`
 --
--- @classmod simpleui.Label
+-- @classmod kloveui.Label
 
-local gfx = love.graphics
+local graphics = love.graphics
 
-local Widget = require "simpleui.Widget"
+local Widget = require "kloveui.Widget"
 
-local Label = Widget:extend("simpleui.Label")
+local Label = Widget:extend("kloveui.Label")
 
 ---
 -- Text for the label.
@@ -30,18 +30,18 @@ Label.font = nil
 -- Horizontal alignment for the text.
 --
 -- @tfield number texthalign Default is 0.
--- @see simpleui.Widget:drawtext
+-- @see kloveui.Widget:drawtext
 Label.texthalign = 0
 
 ---
 -- Vertical alignment for the text.
 --
 -- @tfield number textvalign Default is 0.5.
--- @see simpleui.Widget:drawtext
+-- @see kloveui.Widget:drawtext
 Label.textvalign = .5
 
 function Label:calcminsize()
-	local font, text = self.font or gfx.getFont(), self.text
+	local font, text = self.font or graphics.getFont(), self.text
 	local tw, th = font:getWidth(text), font:getHeight(text)
 	local pl, pt, pr, pb = self:paddings()
 	return tw+pl+pr, th+pt+pb

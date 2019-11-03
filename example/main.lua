@@ -1,8 +1,18 @@
 
--- Example use of SimpleUI.
+-- Example use of KLÖVEUI.
 
 local graphics = love.graphics
-local simpleui = require "simpleui"
+
+local kloveui = require "kloveui"
+
+local Box = require "kloveui.Box"
+local Button = require "kloveui.Button"
+local Check = require "kloveui.Check"
+local Entry = require "kloveui.Entry"
+local Label = require "kloveui.Label"
+local Option = require "kloveui.Option"
+local Slider = require "kloveui.Slider"
+local Widget = require "kloveui.Widget"
 
 -- Let's override `print` to print source location.
 local lprint = print
@@ -17,9 +27,9 @@ function print(...)
 end
 
 -- Example of custom widget classes.
--- See `simpleui.Widget`.
+-- See `kloveui.Widget`.
 
-local Example = simpleui.Widget:extend("Example")
+local Example = Widget:extend("Example")
 
 local function drawrect(label, cr, cg, cb, x, y, w, h)
 	graphics.setColor(cr, cg, cb, .5)
@@ -30,7 +40,7 @@ local function drawrect(label, cr, cg, cb, x, y, w, h)
 end
 
 -- We draw our widget "background" here.
--- See `simpleui.Widget:paintbg`.
+-- See `kloveui.Widget:paintbg`.
 function Example:paintbg()
 	-- As a test, let's draw our layout parameters.
 
@@ -40,7 +50,7 @@ function Example:paintbg()
 
 	-- Margin in red.
 	-- Note that we are technically drawing outside the bounds
-	-- of our widget. SimpleUI does not clip any graphics calls,
+	-- of our widget. KLÖVEUI does not clip any graphics calls,
 	-- but we should always respect the layout parameters.
 	drawrect("Margin", 1, .5, .5, -ml, -mt, w+ml+mr, h+mt+mb)
 
@@ -58,9 +68,9 @@ function Example:paintbg()
 end
 
 -- We draw our widget "foreground" here.
--- See `simpleui.Widget:paintfg`.
+-- See `kloveui.Widget:paintfg`.
 function Example:paintfg()
-	-- We should ALWAYS set colors explicitly. SimpleUI does not
+	-- We should ALWAYS set colors explicitly. KLÖVEUI does not
 	-- save or restore any state besides the transformation matrix.
 	graphics.setColor(255, 255, 255)
 	self:drawtext(not self.enabled, self.text, .5, .5)
@@ -76,57 +86,53 @@ end
 
 -- We should define this method if we want to add it to a
 -- container and we don't explicitly set `minw` and `minh`.
--- See `simpleui.Widget:calcminsize`.
--- See `simpleui.Widget.minw`.
--- See `simpleui.Widget.minh`.
+-- See `kloveui.Widget:calcminsize`.
+-- See `kloveui.Widget.minw`.
+-- See `kloveui.Widget.minh`.
 function Example:calcminsize()
 	return 320, 240
 end
 
 -- We can handle mouse events.
--- See `simpleui.Widget:mousepressed`.
+-- See `kloveui.Widget:mousepressed`.
 function Example:mousepressed(x, y, b)
-	-- Note: Since LÖVE developers tend to change constants
-	-- between releases, the `simpleui.Widget` class exports
-	-- some constants with the correct value for the currently
-	-- running version.
-	if b == self.LMB then -- Left Mouse Button
+	if b == 1 then -- Left Mouse Button
 		self._mousex, self._mousey = x, y
 	end
 end
 
--- See `simpleui.Widget:mousemoved`.
+-- See `kloveui.Widget:mousemoved`.
 function Example:mousemoved(x, y)
 	if self._mousex then
 		self._mousex, self._mousey = x, y
 	end
 end
 
--- See `simpleui.Widget:mousereleased`.
+-- See `kloveui.Widget:mousereleased`.
 function Example:mousereleased()
 	self._mousex, self._mousey = nil, nil
 end
 
 -- Our "root" widget.
 -- You will notice the GUI description is like a nice tree structure.
--- See `simpleui.Box`.
-local root; root = simpleui.Box {
+-- See `kloveui.Box`.
+local root; root = Box {
 	id = "root",
 	mode = "v",
-	simpleui.Box {
+	Box {
 		mode = "h",
-		-- See `simpleui.Button`.
-		simpleui.Button {
+		-- See `kloveui.Button`.
+		Button {
 			text = "Disabled",
 			enabled = false,
 		},
-		simpleui.Button {
+		Button {
 			text = "Hello, world!",
 		},
-		simpleui.Button {
+		Button {
 			text = "Click me to add more buttons!",
 			activated = function()
-				root:addchild(simpleui.Button {
+				root:addchild(Button {
 					expand=true,
 					text="Click me to remove me!",
 					activated = function(_self)
@@ -138,62 +144,62 @@ local root; root = simpleui.Box {
 				root:layout()
 			end,
 		},
-		simpleui.Button {
+		Button {
 			text = "Re-layout",
 			activated = function()
 				root:layout()
 			end,
 		},
 	},
-	simpleui.Box {
+	Box {
 		mode = "h",
 		spacing = 8,
 		padding = 8,
-		-- See `simpleui.Label`.
-		simpleui.Label { text="Example of an horizontal box." },
-		simpleui.Button { text="Yes" },
-		simpleui.Button { text="No" },
+		-- See `kloveui.Label`.
+		Label { text="Example of an horizontal box." },
+		Button { text="Yes" },
+		Button { text="No" },
 	},
-	simpleui.Box {
+	Box {
 		mode = "h",
 		spacing = 8,
 		padding = 8,
 		-- If we want to right-align items, we can add a dummy
 		-- expandable widget to the start.
-		simpleui.Widget { expand=true, __debug=true },
-		simpleui.Label { text="Example of an horizontal box." },
-		simpleui.Button { text="Yes" },
-		simpleui.Button { text="No" },
+		Widget { expand=true, __debug=true },
+		Label { text="Example of an horizontal box." },
+		Button { text="Yes" },
+		Button { text="No" },
 	},
-	simpleui.Box {
+	Box {
 		mode = "h",
 		spacing = 8,
 		padding = 8,
-		-- See `simpleui.Check`.
-		simpleui.Check { text="Check 1" },
-		simpleui.Check { text="Check 2", value=true },
-		simpleui.Check { text="Check 3" },
-		-- See `simpleui.Option`.
-		simpleui.Option { text="Option 1" },
-		simpleui.Option { text="Option 2", value=true },
-		simpleui.Option { text="Option 3", group="bar" },
-		simpleui.Option { text="Option 4", value=true, group="bar" },
+		-- See `kloveui.Check`.
+		Check { text="Check 1" },
+		Check { text="Check 2", value=true },
+		Check { text="Check 3" },
+		-- See `kloveui.Option`.
+		Option { text="Option 1" },
+		Option { text="Option 2", value=true },
+		Option { text="Option 3", group="bar" },
+		Option { text="Option 4", value=true, group="bar" },
 	},
-	simpleui.Box {
+	Box {
 		mode = "h",
 		spacing = 8,
 		padding = 8,
-		simpleui.Label { text="Sliders" },
-		simpleui.Label { text="Free" },
-		-- See `simpleui.Slider`.
-		simpleui.Slider {
+		Label { text="Sliders" },
+		Label { text="Free" },
+		-- See `kloveui.Slider`.
+		Slider {
 			expand = true,
 			valuechanged = function(_self)
 				print(_self.value)
 			end,
 		},
-		simpleui.Label { text="Snapping" },
-		simpleui.Slider {
+		Label { text="Snapping" },
+		Slider {
 			expand = true,
 			increment = 0.1,
 			valuechanged = function(_self)
@@ -201,14 +207,14 @@ local root; root = simpleui.Box {
 			end,
 		},
 	},
-	-- See `simpleui.Entry`.
-	simpleui.Entry {
+	-- See `kloveui.Entry`.
+	Entry {
 		text = "An editable text entry. ãéìôüñ",
 		committed = function(_self)
 			print(_self.text)
 		end,
 	},
-	simpleui.Box {
+	Box {
 		mode = "h",
 		-- Let's test our example.
 		Example {
@@ -224,8 +230,8 @@ local root; root = simpleui.Box {
 			text = "Custom widget",
 			-- We can add children to our widget, but we must
 			-- explicitly set their positions and dimensions,
-			-- unless we override `simpleui.Widget:layout`.
-			simpleui.Button {
+			-- unless we override `kloveui.Widget:layout`.
+			Button {
 				x = 40,
 				y = 60,
 				w = 80,
@@ -234,7 +240,7 @@ local root; root = simpleui.Box {
 			},
 		},
 		-- You can also override some methods in-place.
-		simpleui.Widget {
+		Widget {
 			expand = true,
 
 			-- Let's specify minimum size directly.
@@ -242,7 +248,7 @@ local root; root = simpleui.Box {
 			minh = 40,
 
 			-- Setting `__debug` to true causes the `paintfg` implementation
-			-- in `simpleui.Widget` to paint some debugging information.
+			-- in `kloveui.Widget` to paint some debugging information.
 			__debug = true,
 
 			-- Though it is not recommended, you can edit some "internal"
@@ -261,7 +267,7 @@ local root; root = simpleui.Box {
 						("%.2f"):format(_self._c), .5, .5)
 				-- It's important to call the method on the base class to
 				-- make `__debug` work.
-				simpleui.Widget.paintfg(_self)
+				Widget.paintfg(_self)
 			end,
 		},
 	},
@@ -269,9 +275,9 @@ local root; root = simpleui.Box {
 
 -- If you need to modify event handlers, remember to call back into the old
 -- function if you don't handle the event yourself.
--- See `simpleui.keypressed`.
-local oldkeypressed = simpleui.keypressed
-function simpleui.keypressed(key, scan, isrep)
+-- See `kloveui.keypressed`.
+local oldkeypressed = kloveui.keypressed
+function kloveui.keypressed(key, scan, isrep)
 	if key == "escape" then
 		love.event.quit()
 		return
@@ -284,9 +290,9 @@ local function main()
 	-- job. We only need to call this for the root; it is expected it will
 	-- call `rect` (which calls `layout` after positioning) to position its
 	-- children as needed .
-	-- See `simpleui.Widget:layout`.
+	-- See `kloveui.Widget:layout`.
 	root:layout()
-	-- See `simpleui.Widget:run`.
+	-- See `kloveui.Widget:run`.
 	return root:run()
 end
 

@@ -2,19 +2,19 @@
 ---
 -- Clickable button.
 --
--- **Extends:** `simpleui.Widget`
+-- **Extends:** `kloveui.Widget`
 --
 -- **Direct subclasses:**
 --
--- * `simpleui.Check`
+-- * `kloveui.Check`
 --
--- @classmod simpleui.Button
+-- @classmod kloveui.Button
 
-local gfx = love.graphics
+local graphics = love.graphics
 
-local Widget = require "simpleui.Widget"
+local Widget = require "kloveui.Widget"
 
-local Button = Widget:extend("simpleui.Button")
+local Button = Widget:extend("kloveui.Button")
 
 ---
 -- Text label for the button.
@@ -32,14 +32,14 @@ Button.font = nil
 -- Horizontal alignment for the text.
 --
 -- @tfield number texthalign Default is 0.5.
--- @see simpleui.Widget:drawtext
+-- @see kloveui.Widget:drawtext
 Button.texthalign = .5
 
 ---
 -- Vertical alignment for the text.
 --
 -- @tfield number textvalign Default is 0.5.
--- @see simpleui.Widget:drawtext
+-- @see kloveui.Widget:drawtext
 Button.textvalign = .5
 
 ---
@@ -57,7 +57,7 @@ function Button:activated()
 end
 
 function Button:calcminsize()
-	local font, text = self.font or gfx.getFont(), self.text
+	local font, text = self.font or graphics.getFont(), self.text
 	local tw, th = font:getWidth(text), font:getHeight(text)
 	local pl, pt, pr, pb = self:paddings()
 	return tw+pl+pr, th+pt+pb
@@ -65,13 +65,13 @@ end
 
 function Button:mousepressed(x, y, b)
 	if self:inside(x, y) then
-		self.pressed = b == self.LMB
+		self.pressed = b == 1
 		self.hasmouse = self.pressed
 	end
 end
 
 function Button:mousereleased(x, y, b)
-	if self.hasmouse and b == self.LMB and self:inside(x, y) then
+	if self.hasmouse and b == 1 and self:inside(x, y) then
 		self:activated()
 	end
 	self.pressed = false

@@ -1,5 +1,5 @@
 
-# SimpleUI
+# KLÖVEUI
 
 A simple UI library for [LÖVE][love2d].
 
@@ -20,7 +20,7 @@ available online at the moment.
 
 ## Requirements
 
-* [LÖVE][love2d] (tested with 0.10.2, "Super Toast").
+* [LÖVE][love2d] (tested with 11.3, "Mysterious Mysteries").
 * [klass][klass]
 
 [love2d]: http://love2d.org

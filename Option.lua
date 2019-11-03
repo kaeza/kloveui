@@ -8,15 +8,15 @@
 -- parent *and* group are unchecked. Groups are checked for equality using the
 -- `rawequal` function.
 --
--- **Extends:** `simpleui.Check`
+-- **Extends:** `kloveui.Check`
 --
--- @classmod simpleui.Option
+-- @classmod kloveui.Option
 
-local gfx = love.graphics
+local graphics = love.graphics
 
-local Check = require "simpleui.Check"
+local Check = require "kloveui.Check"
 
-local Option = Check:extend("simpleui.Option")
+local Option = Check:extend("kloveui.Option")
 
 ---
 -- Group of this option.
@@ -27,14 +27,14 @@ Option.group = ""
 function Option:paintcheck(value, x, y, size)
 	size = size/2
 	x, y = x+size, y+size
-	gfx.circle("line", x, y, size)
+	graphics.circle("line", x, y, size)
 	if value then
-		gfx.circle("fill", x, y, size-3)
+		graphics.circle("fill", x, y, size-3)
 	end
 end
 
 function Option:activated()
-	local p = self.__refs.parent
+	local p = self.weakrefs.parent
 	for wid in p:children() do
 		if rawequal(wid.group, self.group) then
 			wid.value = false

@@ -13,15 +13,15 @@
 --   of the insertion point, respectively.
 -- * Enter or Return commits the text (calls the `committed` method).
 --
--- **Extends:** `simpleui.Widget`
+-- **Extends:** `kloveui.Widget`
 --
--- @classmod simpleui.Entry
+-- @classmod kloveui.Entry
 
-local gfx = love.graphics
+local graphics = love.graphics
 
-local Widget = require "simpleui.Widget"
+local Widget = require "kloveui.Widget"
 
-local Entry = Widget:extend("simpleui.Entry")
+local Entry = Widget:extend("kloveui.Entry")
 
 local ibeam
 
@@ -86,7 +86,7 @@ function Entry:postoindex(x)
 	elseif x >= self.w then
 		return len
 	end
-	local font = self.font or gfx.getFont()
+	local font = self.font or graphics.getFont()
 	for i = 1, len do
 		local pfx = ustrsub(text, 1, i)
 		local w = font:getWidth(pfx)
@@ -98,11 +98,6 @@ function Entry:postoindex(x)
 end
 
 ---
--- Called when the Enter key is pressed.
-function Entry:committed()
-end
-
----
 -- Convert from an index to a pixel offset.
 --
 -- @tparam number index Index of the character.
@@ -110,12 +105,17 @@ end
 -- @see index
 function Entry:indextopos(index)
 	local pl = self:paddings()
-	local font = self.font or gfx.getFont()
+	local font = self.font or graphics.getFont()
 	return font:getWidth(ustrsub(self.text, 1, index))+pl
 end
 
+---
+-- Called when the Enter key is pressed.
+function Entry:committed()
+end
+
 function Entry:calcminsize()
-	local font, text = self.font or gfx.getFont(), self.text
+	local font, text = self.font or graphics.getFont(), self.text
 	local tw, th = font:getWidth(text), font:getHeight(text)
 	local pl, pt, pr, pb = self:paddings()
 	return tw+pl+pr, th+pt+pb
@@ -123,12 +123,12 @@ end
 
 function Entry:mousepressed(x, y, b)
 	if not self:inside(x, y) then return end
-	self._pressed = b == self.LMB
+	self._pressed = b == 1
 	return self:mousemoved(x, y, 0, 0)
 end
 
 function Entry:mousereleased(x, y, b)
-	if self._pressed and b == self.LMB then
+	if self._pressed and b == 1 then
 		self._pressed = false
 	end
 end
@@ -223,9 +223,9 @@ function Entry:paintfg()
 			0, 0, self.font,
 			pl, pt, w-pl-pr, h-pt-pb)
 	if self.hasfocus then
-		local th = (self.font or gfx.getFont()):getHeight("Ay")
+		local th = (self.font or graphics.getFont()):getHeight("Ay")
 		local x = self:indextopos(self.index)
-		gfx.line(x, pt-2, x, th+2)
+		graphics.line(x, pt-2, x, th+2)
 	end
 	Widget.paintfg(self)
 end

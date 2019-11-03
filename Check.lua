@@ -4,20 +4,20 @@
 --
 -- Check buttons are toggled by clicking.
 --
--- **Extends:** `simpleui.Button`
+-- **Extends:** `kloveui.Button`
 --
 -- **Direct subclasses:**
 --
--- * `simpleui.Option`
+-- * `kloveui.Option`
 --
--- @classmod simpleui.Check
+-- @classmod kloveui.Check
 
-local gfx = love.graphics
+local graphics = love.graphics
 
-local Widget = require "simpleui.Widget"
-local Button = require "simpleui.Button"
+local Widget = require "kloveui.Widget"
+local Button = require "kloveui.Button"
 
-local Check = Button:extend("simpleui.Check")
+local Check = Button:extend("kloveui.Check")
 
 ---
 -- Current value of the checkmark.
@@ -28,7 +28,7 @@ Check.value = false
 Check.texthalign = 0
 
 function Check:calcminsize()
-	local font, text = self.font or gfx.getFont(), self.text
+	local font, text = self.font or graphics.getFont(), self.text
 	local tw, th = font:getWidth(text), font:getHeight(text)
 	local pl, pt, pr, pb = self:paddings()
 	return th+2+tw+pl+pr, th+pt+pb
@@ -42,9 +42,9 @@ end
 -- @tparam number y Y position.
 -- @tparam number size Size of the checkbox.
 function Check:paintcheck(value, x, y, size)
-	gfx.rectangle("line", x, y, size, size)
+	graphics.rectangle("line", x, y, size, size)
 	if value then
-		gfx.rectangle("fill", x+3, y+3, size-6, size-6)
+		graphics.rectangle("fill", x+3, y+3, size-6, size-6)
 	end
 end
 
@@ -53,7 +53,7 @@ function Check:paintbg()
 end
 
 function Check:paintfg()
-	local font, text = self.font or gfx.getFont(), self.text
+	local font, text = self.font or graphics.getFont(), self.text
 	local pl, pt, pr, pb = self:paddings()
 	local th = font:getHeight(text)
 	local p = self.pressed and 1 or 0

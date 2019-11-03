@@ -2,16 +2,15 @@
 ---
 -- Widget to select from a range of values.
 --
--- **Extends:** `simpleui.Widget`
+-- **Extends:** `kloveui.Widget`
 --
--- @classmod simpleui.Slider
+-- @classmod kloveui.Slider
 
-local gfx = love.graphics
-local min, max, floor = math.min, math.max, math.floor
+local graphics = love.graphics
 
-local Widget = require "simpleui.Widget"
+local Widget = require "kloveui.Widget"
 
-local Slider = Widget:extend("simpleui.Slider")
+local Slider = Widget:extend("kloveui.Slider")
 
 ---
 -- Current value for the slider.
@@ -44,7 +43,7 @@ Slider.anchor = "l"
 ---
 -- Color for the handle while pressed.
 --
--- @tfield simpleui.Color handlecolorpressed Default is (.75, .75, .75).
+-- @tfield kloveui.Color handlecolorpressed Default is (.75, .75, .75).
 Slider.handlecolorpressed = ({ .75, .75, .75 })
 
 ---
@@ -57,7 +56,7 @@ Slider.handlecolorpressed = ({ .75, .75, .75 })
 -- @treturn number Old value.
 function Slider:setvalue(v, force)
 	local old = self.value
-	v = max(0, min(1, v))
+	v = math.max(0, math.min(1, v))
 	if force or v ~= self.value then
 		self.value = v
 		self:valuechanged(old)
@@ -75,27 +74,26 @@ end
 -- @tparam boolean vert True if this is a vertical bar, false otherwise.
 -- @tparam boolean pressed True if the handle is currently pressed,
 --  false otherwise.
--- @see simpleui.Widget:paintfg
+-- @see kloveui.Widget:paintfg
 function Slider:painthandle(x, y, vert, pressed)
 	local size = (vert and self.w or self.h)/4
 	local fg = (self.enabled
 			and (pressed and self.handlecolorpressed or self.fgcolor)
 			or self.fgcolordisabled)
 	local bc = self.bordercolor
-	gfx.push()
-	gfx.translate(x, y)
+	graphics.push()
+	graphics.translate(x, y)
 	if vert then
-		gfx.rotate(math.pi/2)
+		graphics.rotate(math.pi/2)
 	end
-	gfx.setColor(fg)
-	--                 | P1        | P2              | P3
-	gfx.polygon("fill", 0, -size, -size, -size*2, size, -size*2)
-	gfx.polygon("fill", 0,  size, -size,  size*2, size,  size*2)
-	gfx.line(0, -size, 0, size)
-	gfx.setColor(bc)
-	gfx.polygon("line", 0, -size, -size, -size*2, size, -size*2)
-	gfx.polygon("line", 0,  size, -size,  size*2, size,  size*2)
-	gfx.pop()
+	graphics.setColor(fg)
+	graphics.polygon("fill", 0, -size, -size, -size*2, size, -size*2)
+	graphics.polygon("fill", 0,  size, -size,  size*2, size,  size*2)
+	graphics.line(0, -size, 0, size)
+	graphics.setColor(bc)
+	graphics.polygon("line", 0, -size, -size, -size*2, size, -size*2)
+	graphics.polygon("line", 0,  size, -size,  size*2, size,  size*2)
+	graphics.pop()
 end
 
 ---
@@ -104,10 +102,10 @@ end
 -- The bar is part of the "background".
 --
 -- @tparam number x X position of the center of the handle.
--- @see simpleui.Widget:paintbg
+-- @see kloveui.Widget:paintbg
 function Slider:paintbar()
-	gfx.setColor(self.bgcolor)
-	gfx.rectangle("fill", 0, 0, self.w, self.h)
+	graphics.setColor(self.bgcolor)
+	graphics.rectangle("fill", 0, 0, self.w, self.h)
 end
 
 ---
@@ -127,14 +125,14 @@ function Slider:calcminsize()
 end
 
 function Slider:mousepressed(x, y, b)
-	if b == self.LMB then
+	if b == 1 then
 		self._pressed = true
 		self:mousemoved(x, y)
 	end
 end
 
 function Slider:mousereleased(_, _, b)
-	if b == self.LMB then
+	if b == 1 then
 		self._pressed = nil
 	end
 end
@@ -153,7 +151,7 @@ function Slider:mousemoved(x, y)
 			v = x/self.w
 		end
 		if self.increment then
-			v = floor(v/self.increment+.5)*self.increment
+			v = math.floor(v/self.increment+.5)*self.increment
 		end
 		self:setvalue(v)
 	end
@@ -180,8 +178,8 @@ end
 function Slider:paintbg()
 	Widget.paintbg(self)
 	self:paintbar()
-	gfx.setColor(self.bordercolor)
-	gfx.rectangle("line", 0, 0, self.w, self.h)
+	graphics.setColor(self.bordercolor)
+	graphics.rectangle("line", 0, 0, self.w, self.h)
 end
 
 return Slider

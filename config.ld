@@ -1,5 +1,5 @@
 
-project = "SimpleUI"
+project = "KLÖVEUI"
 
 description = [[
 A simple User Interface library for [LÖVE](http://love2d.org).

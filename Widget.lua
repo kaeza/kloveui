@@ -6,28 +6,26 @@
 --
 -- **Direct subclasses:**
 --
--- * `simpleui.Box`
--- * `simpleui.Button`
--- * `simpleui.Entry`
--- * `simpleui.Image`
--- * `simpleui.Label`
--- * `simpleui.Slider`
+-- * `kloveui.Box`
+-- * `kloveui.Button`
+-- * `kloveui.Entry`
+-- * `kloveui.Image`
+-- * `kloveui.Label`
+-- * `kloveui.Slider`
 --
--- @classmod simpleui.Widget
+-- @classmod kloveui.Widget
 
-local gfx = love.graphics
-
-local min, max, floor = math.min, math.max, math.floor
+local graphics = love.graphics
 
 local klass = require "klass"
 
-local Widget = klass:extend("simpleui.Widget")
+local Widget = klass:extend("kloveui.Widget")
 
 ---
 -- ID of this widget.
 --
 -- @tfield any id Default is nil.
--- @see simpleui.lookup
+-- @see kloveui.lookup
 Widget.id = nil
 
 ---
@@ -97,40 +95,40 @@ Widget.enabled = true
 ---
 -- Color for foreground graphics.
 --
--- @tfield simpleui.Color fgcolor Default is (.95, .95, .95).
+-- @tfield kloveui.Color fgcolor Default is (.95, .95, .95).
 Widget.fgcolor = ({ .95, .95, .95 })
 
 ---
 -- Color for foreground graphics when disabled.
 --
--- @tfield simpleui.Color fgcolordisabled Default is (.75, .75, .75).
+-- @tfield kloveui.Color fgcolordisabled Default is (.75, .75, .75).
 -- @see enabled
 Widget.fgcolordisabled = ({ .75, .75, .75 })
 
 ---
 -- Color for background graphics.
 --
--- @tfield simpleui.Color bgcolor Default is (.25, .25, .25).
+-- @tfield kloveui.Color bgcolor Default is (.25, .25, .25).
 Widget.bgcolor = ({ .25, .25, .25 })
 
 ---
 -- Color for background graphics when raised.
 --
--- @tfield simpleui.Color bgcolorraised Default is (.5, .5, .5).
+-- @tfield kloveui.Color bgcolorraised Default is (.5, .5, .5).
 -- @see drawbevel
 Widget.bgcolorraised = ({ .5, .5, .5 })
 
 ---
 -- Color for background graphics when sunken.
 --
--- @tfield simpleui.Color bgcolorsunken Default is (.125, .125, .125).
+-- @tfield kloveui.Color bgcolorsunken Default is (.125, .125, .125).
 -- @see drawbevel
 Widget.bgcolorsunken = ({ .125, .125, .125 })
 
 ---
 -- Color for the border.
 --
--- @tfield simpleui.Color bordercolor Default is (0, 0, 0).
+-- @tfield kloveui.Color bordercolor Default is (0, 0, 0).
 Widget.bordercolor = ({ 0, 0, 0 })
 
 ---
@@ -146,27 +144,27 @@ Widget.expand = false
 --
 -- May be used by layout widgets.
 --
--- @tfield simpleui.Border|number margin Default is 0.
+-- @tfield kloveui.Border|number margin Default is 0.
 Widget.margin = 0
 
 ---
 -- Padding around the widget's content.
 --
--- @tfield simpleui.Border|number padding Default is 0.
+-- @tfield kloveui.Border|number padding Default is 0.
 Widget.padding = 0
 
 ---
 -- Whether or not the widget can grab the input focus.
 --
 -- @tfield boolean canfocus Default is false.
--- @see simpleui.setfocus
+-- @see kloveui.setfocus
 Widget.canfocus = false
 
 ---
 -- Whether or not the widget currently has the input focus.
 --
 -- @tfield boolean hasfocus Default is false.
--- @see simpleui.setfocus
+-- @see kloveui.setfocus
 Widget.hasfocus = false
 
 ---
@@ -178,8 +176,8 @@ Widget.hasfocus = false
 -- **NOTE: This field should not be overridden. It is documented here so
 -- subclasses don't introduce name clashes.**
 --
--- @tfield table __refs Initialized to new table on instantiation.
-Widget.__refs = nil
+-- @tfield table weakrefs Initialized to new table on instantiation.
+Widget.weakrefs = nil
 
 ---
 -- Whether or not to draw debugging information.
@@ -188,59 +186,15 @@ Widget.__refs = nil
 Widget.__debug = nil
 
 ---
--- Constant for the left mouse button.
---
--- This field is for compatibility purposes. Its value and type may change
--- depending on the LÖVE version currently in use.
---
--- See the documentation for `love.mousepressed` for details.
---
--- @tfield any LMB
-Widget.LMB = 1
-
----
--- Constant for the right mouse button.
---
--- This field is for compatibility purposes. Its value and type may change
--- depending on the LÖVE version currently in use.
---
--- See the documentation for `love.mousepressed` for details.
---
--- @tfield any RMB
-Widget.RMB = 2
-
----
--- Constant for the middle mouse button.
---
--- This field is for compatibility purposes. Its value and type may change
--- depending on the LÖVE version currently in use.
---
--- See the documentation for `love.mousepressed` for details.
---
--- @tfield any MMB
-Widget.MMB = 3
-
----
--- Constant for the space key.
---
--- This field is for compatibility purposes. Its value and type may change
--- depending on the LÖVE version currently in use.
---
--- See the documentation for `love.keyboard.KeyConstant` for details.
---
--- @tfield love.keyboard.KeyConstant SPACE
-Widget.SPACE = "space"
-
----
 -- Constructor.
 --
 -- @tparam table params Field overrides. Non-nil fields are copied to the
 --  new instance. Where it makes any difference, only references are copied,
 --  not values.
 function Widget:init(params)
-	self.__refs = setmetatable({ }, { __mode="kv" })
+	self.weakrefs = setmetatable({ }, { __mode="kv" })
 	for _, v in ipairs(params) do
-		v.__refs.parent = self
+		v.weakrefs.parent = self
 	end
 	for k, v in pairs(params) do
 		self[k] = v
@@ -266,12 +220,12 @@ end
 ---
 -- Add a child to this widget.
 --
--- @tparam simpleui.Widget child Child widget.
+-- @tparam kloveui.Widget child Child widget.
 -- @tparam ?number pos Position at which to insert the child in the list.
 --  Default is to append to the end of the list.
 -- @treturn Widget The child.
 function Widget:addchild(child, pos)
-	child.__refs.parent = self
+	child.weakrefs.parent = self
 	table.insert(self, pos or #self+1, child)
 	return child
 end
@@ -279,16 +233,17 @@ end
 ---
 -- Remove a child from this widget.
 --
--- @tparam simpleui.Widget|number child Child widget, or list index.
--- @treturn simpleui.Widget|nil The removed widget, or nil if the specified
+-- @tparam kloveui.Widget|number child Child widget, or list index.
+-- @treturn kloveui.Widget|nil The removed widget, or nil if the specified
 --  widget is not a child of this one or the list index is out of bounds.
 function Widget:removechild(child)
 	if type(child) == "number" then
-		local r = table.remove(self, child)
+		local  r = table.remove(self, child)
 		return r
 	else
 		for c, i in self:children() do
 			if rawequal(c, child) then
+				child.weakrefs.parent = nil
 				local r = table.remove(self, i)
 				return r
 			end
@@ -313,7 +268,7 @@ end
 -- the same ID, the first sibling in its parent's list takes preference.
 --
 -- @tparam any id ID to look up.
--- @treturn simpleui.Widget|nil The widget if found, nil otherwise.
+-- @treturn kloveui.Widget|nil The widget if found, nil otherwise.
 -- @see id
 function Widget:lookup(id)
 	for child in self:children() do
@@ -368,7 +323,9 @@ end
 -- @see enabled
 -- @see inside
 function Widget:hittest(x, y)
-	if not self.enabled then return nil end
+	if not self.enabled then
+		return nil
+	end
 	x, y = x-self.x, y-self.y
 	if not self:inside(x, y) then
 		return
@@ -404,7 +361,7 @@ function Widget:abspos()
 	local w = self
 	while w do
 		x, y = x+w.x, y+w.y
-		w = w.__refs.parent
+		w = w.weakrefs.parent
 	end
 	return x, y
 end
@@ -477,8 +434,8 @@ end
 -- @see maxsize
 function Widget:calcmaxsize()
 	local w, h
-	if self.__refs.parent then
-		w, h = self.__refs.parent:maxsize()
+	if self.weakrefs.parent then
+		w, h = self.weakrefs.parent:maxsize()
 	else
 		w, h = love.window.getMode()
 	end
@@ -558,10 +515,10 @@ function Widget:size(w, h)
 	local minw, minh = self:minsize()
 	local maxw, maxh = self:maxsize()
 	if w ~= nil then
-		mod, self.w = true, max(minw, min(maxw, w))
+		mod, self.w = true, math.max(minw, math.min(maxw, w))
 	end
 	if h ~= nil then
-		mod, self.h = true, max(minh, min(maxh, h))
+		mod, self.h = true, math.max(minh, math.min(maxh, h))
 	end
 	if mod then
 		self:layout()
@@ -591,10 +548,10 @@ function Widget:rect(x, y, w, h)
 	local minw, minh = self:minsize()
 	local maxw, maxh = self:maxsize()
 	if w ~= nil then
-		mod, self.w = true, max(minw, min(maxw, w))
+		mod, self.w = true, math.max(minw, math.min(maxw, w))
 	end
 	if h ~= nil then
-		mod, self.h = true, max(minh, min(maxh, h))
+		mod, self.h = true, math.max(minh, math.min(maxh, h))
 	end
 	if mod then
 		self:layout()
@@ -607,14 +564,14 @@ end
 --
 -- Do not override this method. Override `paintfg` and/or `paintbg` instead.
 function Widget:draw()
-	gfx.push()
-	gfx.translate(self.x, self.y)
+	graphics.push()
+	graphics.translate(self.x, self.y)
 	self:paintbg()
 	for child in self:children() do
 		child:draw()
 	end
 	self:paintfg()
-	gfx.pop()
+	graphics.pop()
 end
 
 ---
@@ -624,9 +581,9 @@ end
 -- widget's origin.
 function Widget:paintfg()
 	if self.__debug then
-		gfx.setColor(255, 255, 0, 192)
-		gfx.rectangle("line", 0, 0, self:size())
-		gfx.print(tostring(self))
+		graphics.setColor(255, 255, 0, 192)
+		graphics.rectangle("line", 0, 0, self:size())
+		graphics.print(tostring(self))
 	end
 end
 
@@ -652,10 +609,10 @@ end
 -- @see bordercolor
 function Widget:drawbevel(sunken, x, y, w, h)
 	x, y, w, h = x or 0, y or 0, w or self.w, h or self.h
-	gfx.setColor(sunken and self.bgcolorsunken or self.bgcolorraised)
-	gfx.rectangle("fill", x, y, w, h)
-	gfx.setColor(self.bordercolor)
-	gfx.rectangle("line", x, y, w, h)
+	graphics.setColor(sunken and self.bgcolorsunken or self.bgcolorraised)
+	graphics.rectangle("fill", x, y, w, h)
+	graphics.setColor(self.bordercolor)
+	graphics.rectangle("line", x, y, w, h)
 end
 
 ---
@@ -678,13 +635,15 @@ end
 -- @see fgcolordisabled
 function Widget:drawtext(disabled, text, halign, valign, font, x, y, w, h)
 	x, y, w, h = x or 0, y or 0, w or self.w, h or self.h
-	gfx.setColor(disabled and self.fgcolordisabled or self.fgcolor)
-	local oldfont = gfx.getFont()
+	graphics.setColor(disabled and self.fgcolordisabled or self.fgcolor)
+	local oldfont = graphics.getFont()
 	font = font or oldfont
 	local tw, th = font:getWidth(text), font:getHeight(text)
-	gfx.setFont(font)
-	gfx.print(text, floor(x+((w-tw)*halign)), floor(y+((h-th)*valign)))
-	gfx.setFont(oldfont)
+	graphics.setFont(font)
+	graphics.print(text,
+			math.floor(x+((w-tw)*halign)),
+			math.floor(y+((h-th)*valign)))
+	graphics.setFont(oldfont)
 end
 
 ---
@@ -700,35 +659,37 @@ end
 ---
 -- Set this widget as the input focus.
 --
--- @treturn simpleui.Widget|nil oldfocus The old input focus, or nil if no
+-- Equivalent to `kloveui.setfocus(self)`.
+--
+-- @treturn kloveui.Widget|nil oldfocus The old input focus, or nil if no
 --  widget had the input focus.
--- @see simpleui.setfocus
+-- @see kloveui.setfocus
 function Widget:setfocus()
-	return require("simpleui").setfocus(self)
+	return require("kloveui").setfocus(self)
 end
 
 ---
 -- Run this widget.
 --
--- Equivalent to `simpleui.run(widget, ...)`.
+-- Equivalent to `kloveui.run(self, ...)`.
 --
 -- @tparam ?number scale GUI scaling factor. Default is 1.
 -- @treturn ?number App exit status (return value of `love.run`).
--- @see simpleui.run
+-- @see kloveui.run
 function Widget:run(scale)
-	return require("simpleui").run(self, scale)
+	return require("kloveui").run(self, scale)
 end
 
 ---
 -- Run this widget.
 --
--- Equivalent to `simpleui.runsub(widget, ...)`.
+-- Equivalent to `kloveui.runsub(self, ...)`.
 --
 -- @tparam ?number scale GUI scaling factor. Default is 1.
 -- @treturn ?number App exit status (return value of `love.run`).
--- @see simpleui.runsub
+-- @see kloveui.runsub
 function Widget:runsub(scale)
-	return require("simpleui").runsub(self, scale)
+	return require("kloveui").runsub(self, scale)
 end
 
 ---
@@ -800,7 +761,7 @@ end
 -- @tparam love.keyboard.KeyConstant key Key name.
 -- @tparam love.keyboard.Scancode scan Key scan code.
 -- @tparam boolean isrep Whether this event was generated due to key repeat.
--- @tparam simpleui.ShiftState shift Shift state.
+-- @tparam kloveui.ShiftState shift Shift state.
 function Widget:keypressed(key, scan, isrep, shift)
 end
 
@@ -809,7 +770,7 @@ end
 --
 -- @tparam love.keyboard.KeyConstant key Key name.
 -- @tparam love.keyboard.Scancode scan Key scan code.
--- @tparam simpleui.ShiftState shift Shift state.
+-- @tparam kloveui.ShiftState shift Shift state.
 function Widget:keyreleased(key, scan, shift)
 end
 
