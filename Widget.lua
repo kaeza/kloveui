@@ -581,7 +581,7 @@ end
 -- widget's origin.
 function Widget:paintfg()
 	if self.__debug then
-		graphics.setColor(255, 255, 0, 192)
+		graphics.setColor(1, 1, 0, .75)
 		graphics.rectangle("line", 0, 0, self:size())
 		graphics.print(tostring(self))
 	end

@@ -72,7 +72,7 @@ end
 function Example:paintfg()
 	-- We should ALWAYS set colors explicitly. KLÖVEUI does not
 	-- save or restore any state besides the transformation matrix.
-	graphics.setColor(255, 255, 255)
+	graphics.setColor(1, 1, 1)
 	self:drawtext(not self.enabled, self.text, .5, .5)
 	if self._mousex then
 		if self:inside(self._mousex, self._mousey) then
