@@ -25,4 +25,4 @@ available online at the moment.
 
 [love2d]: http://love2d.org
 [LDoc]: https://github.com/stevedonovan/LDoc
-[klass]: https://github.com/kaeza/lua-klass
+[klass]: https://github.com/kaeza/klass
