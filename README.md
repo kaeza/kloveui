@@ -23,6 +23,6 @@ available online at the moment.
 * [LÖVE][love2d] (tested with 11.3, "Mysterious Mysteries").
 * [klass][klass]
 
-[love2d]: http://love2d.org
+[love2d]: https://love2d.org
 [LDoc]: https://github.com/stevedonovan/LDoc
 [klass]: https://github.com/kaeza/klass
